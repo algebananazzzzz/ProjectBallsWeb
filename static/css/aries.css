@@ -1,0 +1,141 @@
+/* gradients */
+.gradient-primary {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #4568dc, #b06ab3);
+}
+
+.gradient-primary-text {
+  background: linear-gradient(30deg, #4568dc, #b06ab3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-secondary {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+}
+
+.gradient-secondary-text {
+  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-tertiary {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #00e5ff 0%, #00e676 50%, #76ff03 100%);
+}
+
+.gradient-tertiary-text {
+  background: linear-gradient(30deg, #00e5ff 0%, #00e676 50%, #76ff03 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-success {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #227e22 2.9%, #a8fb3c 90.3%);
+}
+
+.gradient-success-text {
+  background: linear-gradient(30deg, #227e22 2.9%, #a8fb3c 90.3%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-info {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #363795, #005c97);
+}
+
+.gradient-info-text {
+  background: linear-gradient(30deg, #363795, #005c97);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-warning {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #f12711, #f5af19);
+}
+
+.gradient-warning-text {
+  background: linear-gradient(30deg, #f12711, #f5af19);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-danger {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #dd2476, #ff512f);
+}
+
+.gradient-danger-text {
+  background: linear-gradient(30deg, #dd2476, #ff512f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-light {
+  color: #607d8b !important;
+  background: linear-gradient(30deg, #ffffff, #ece9e6);
+}
+
+.gradient-light .alert-link {
+  color: #607d8b;
+}
+
+.gradient-light-text {
+  background: linear-gradient(30deg, #ffffff, #ece9e6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-dark {
+  color: #ffffff !important;
+  background: linear-gradient(30deg, #29323c, #485563);
+}
+
+.gradient-dark-text {
+  background: linear-gradient(30deg, #29323c, #485563);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* top navbar */
+#topnav {
+  position: relative;
+  background-color: transparent;
+}
+
+#topnav canvas {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+#topnav .nav-wrapper {
+  z-index: 1;
+}
+
+#topnav:hover canvas {
+  opacity: 1;
+}
+
+.tabs.tabs-transparent .tab a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* footer */
+.canvas-wrapper.page-footer {
+  background-color: transparent !important;
+}
+
+/*# sourceMappingURL=aries.css.map */

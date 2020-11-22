@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bgimg canvas-wrapper">
+  <canvas id="canvas-background"></canvas>
+  <div class=" display-container row">
+    <div class="display-middle white-text" style="width:350px">
+      <h4 class="center">Sign up with</h4>
+      <!-- <a class="btn-large gradient-secondary hover-0 z-depth-0 col s12 " href="#">
+        Google
+      </a>
+      <a class="btn-large  gradient-info hover-0 z-depth-0 col s12" href="#" style="margin-top: 15px;margin-bottom: 15px;">Facebook</a>
+      <h6 class="center">Or</h6> -->
+      <form method="post">
+        {% csrf_token %}
+        <div class="input-field ">
+          <i class="material-icons prefix white-text">account_circle</i>
+          <input name="username" id="username" type="text" class="validate white-text">
+          <label for="username" class="white-text">USERNAME</label>
+          <span class="helper-text white-text">150 characters or fewer. Letters, digits and @/./+/-/_ only.</span>
+        </div>
+        <div class="input-field ">
+          <i class="material-icons prefix white-text">lock</i>
+          <input name="password1" id="password1" type="password" class="validate white-text">
+          <label for="password1" class="white-text">PASSWORD</label>
+          <span class="helper-text white-text">
+            Contain at least 8 characters, and not entirely numeric.</span>
+        </div>
+        <div class="input-field ">
+          <i class="material-icons prefix white-text">check</i>
+          <input name="password2" id="password2" type="password" class="validate white-text" onblur="match()" onfocus="match()" onchange="match()">
+          <label for="password2" class="white-text">COMFIRM PASSWORD</label>
+
+          <span class="helper-text white-text" data-error="Password does not match :(" data-success="Gotcha!"></span>
+          {% if error_message%}
+          <span class="helper-text white-text">{{error_message}}</span>
+          {% endif%}
+        </div>
+
+        <button type="submit" class="btn-large gradient-success hover-0 z-depth-1 col s12" href="#">
+          Sign up
+        </button>
+      </form>
+
+      <a class="white-text col s12" href="{% url 'login' %}" style="padding-left: 0;margin-top:10px">Login instead</a>
+
+    </div>
+  </div>
+</div>
+<a href="javascript:history.back()"><i class="material-icons medium white-text" style="position:fixed; top:15px;left:15px">arrow_back</i>
+</a>
+
+<script src="../static/js/signup.js" charset="utf-8"></script>
+
+{% endblock %}
