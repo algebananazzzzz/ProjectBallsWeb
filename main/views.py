@@ -57,4 +57,19 @@ def signup(request):
 
 def dashboard(request):
     return render(request=request, template_name="main/dashboard.html")
+
+
+def board(request):
+    return render(request=request, template_name="main/board.html")
+
+
+def snippets(request):
+    return render(request=request, template_name="main/snippets.html")
+
+
+def configure(request, boardPk=None):
+    if request.method == "POST":
+        for i in request.POST:
+            print(i, request.POST[i])
+    return render(request=request, template_name="main/configure.html", context={'boardPk': 1})
 # Create your views here.

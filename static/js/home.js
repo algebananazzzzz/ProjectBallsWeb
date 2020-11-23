@@ -122,18 +122,16 @@ new Granim({
   isPausedWhenNotInView: true,
   image: {
     source: '../media/images/ulti-skye-bg.jpg',
-    stretchMode: ['stretch', 'stretch'],
-    blendingMode: 'screen'
+    stretchMode: ['none', 'none'],
+    blendingMode: 'darken'
   },
   states: {
     "default-state": {
       gradients: [
-        ['#F45C43', '#EB3349'],
-        ['#FF8008', '#FFC837'],
-        ['#3CD3AD', '#4CB8C4'],
-        ['#24C6DC', '#514A9D'],
-        ['#DD2476', '#FF512F'],
-        ['#DA22FF', '#9733EE'],
+        ['#29323c', '#485563'],
+        ['#FF6B6B', '#556270'],
+        ['#80d3fe', '#7ea0c4'],
+        ['#f0ab51', '#eceba3']
       ],
       transitionSpeed: 5000
     }

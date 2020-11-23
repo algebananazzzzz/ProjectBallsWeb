@@ -1,29 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<nav id="topnav" class="topnav-fixed">
+  <canvas class="canvas-basic opacity-off"></canvas>
+  <div class="nav-wrapper" style="padding-left:15px">
+    <div class="center">
+      <a href="{% url 'dashboard' %}" class="breadcrumb">Dashboard</a>
+      <a class="breadcrumb">Board</a>
+    </div>
 
-<nav role="navigation" id="topnav" class="transparent-bg z-depth-0 topnav-fixed canvas-wrapper">
-  <canvas class="canvas-basic"></canvas>
-  <div class="nav-wrapper">
-    <a href="#" class="brand-logo center">ProjectBalls</a>
-    <ul class="right">
-      <li><a href="{% url 'configure' %}"><i class="material-icons right">settings</i>Configure</a></li>
-
-      <li><a href="{% url 'logout' %}"><i class="material-icons right">logout</i>Logout</a></li>
-    </ul>
   </div>
 </nav>
+
 
 <div class=" bgimg ">
   <div class="row display-container container-small" style="padding-top:64px">
     <div class="col s12 m6 white-text">
       <h1>Actions</h1>
       <div class="row">
+        <div class="col s12">
+          <div class="alert gradient-warning alert-dismissible fade show" role="alert">
+            You have yet to assign a video to edit. ProjectBalls won't work properly without it! <a href="#" class="alert-link">Do it here!</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+
+          <div class="alert gradient-info alert-dismissible fade show" role="alert">
+            Assuming default configuration for snippet tags. <a href="#" class="alert-link">Change it here!</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col s6">
           <div class="card gradient-primary">
             <div class="card-content">
-              <h3>Recent Activities</h3>
-              <h6>Pick up on board 3!</h6>
+              <h3>Manage board</h3>
+              <h6>Add/change video and thumbnail!</h6>
             </div>
 
           </div>
@@ -31,8 +52,8 @@
         <div class="col s6">
           <div class="card gradient-secondary">
             <div class="card-content">
-              <h3>View boards</h3>
-              <h6>You have 4 boards</h6>
+              <h3>View snippets</h3>
+              <h6>You have 6 snippets</h6>
             </div>
 
           </div>
@@ -40,8 +61,8 @@
         <div class="col s6">
           <div class="card gradient-tertiary">
             <div class="card-content">
-              <h3>Present</h3>
-              <h6>You wanted to present this...</h6>
+              <h3>Cut video</h3>
+              <h6>Create snippets!!</h6>
             </div>
 
           </div>
@@ -49,8 +70,8 @@
         <div class="col s6">
           <div class="card gradient-warning">
             <div class="card-content">
-              <h3>Configure</h3>
-              <h6>Change controls? No problem!</h6>
+              <h3>Configure tags</h3>
+              <h6>Change tags? No problem!</h6>
             </div>
 
           </div>
@@ -153,14 +174,21 @@
 
 <div class="section-larger" id="home-content1">
   <div class="container-small">
-    <h1 class="gradient-primary-text homepage-name">Boards</h1>
-    <h4 class="center">Each board denotes a video you wanna edit</h4>
+    <h1 class="gradient-primary-text homepage-name">Snippets</h1>
+    <h4 class="center">Your snippets saved for this board</h4>
     <div class="row">
       <div class="col s12 m6 l4">
         <div class="card">
           <div class="card-image waves-effect waves-block waves-light">
             <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1</span>
+            <span class="card-title activator white-text">Board 1 <br>
+              <div class="chip">
+                Offense
+              </div>
+              <div class="chip">
+                Defense
+              </div>
+            </span>
 
           </div>
           <div class="card-reveal">
@@ -168,7 +196,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
               fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
               himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
+            <a class="btn" href="{% url 'snippets' %}">View board 1</a>
           </div>
         </div>
       </div>
@@ -176,7 +204,11 @@
         <div class="card">
           <div class="card-image waves-effect waves-block waves-light">
             <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 2</span>
+            <span class="card-title activator white-text">Board 2<br>
+              <div class="chip">
+                Offense
+              </div>
+            </span>
           </div>
 
           <div class="card-reveal">
@@ -185,15 +217,7 @@
           </div>
         </div>
       </div>
-      <div class="col s12">
-        <a href="{% url 'board' %}">
-          <div class="card-panel center padding-8 canvas-wrapper">
-            <canvas class="canvas-basic" width="300" height="300"></canvas>
-            <h4 class="white-text">Add board
-            </h4>
-          </div>
-        </a>
-      </div>
+
     </div>
   </div>
 </div>
