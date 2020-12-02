@@ -1,6 +1,11 @@
 $(document).ready(function() {
-  $('.materialize-textarea').characterCounter();
+  $('.require-count').characterCounter();
 });
+
+$(document).ready(function() {
+  $('.modal').modal();
+});
+
 $('.canvas-basic').each(function() {
   new Granim({
     element: this,
@@ -24,41 +29,70 @@ $('.canvas-basic').each(function() {
 function myKeyPress(e) {
   var keynum;
 
-  if(window.event) { // IE
+  if (window.event) { // IE
     keynum = e.keyCode;
-  } else if(e.which) { // Netscape/Firefox/Opera
+  } else if (e.which) { // Netscape/Firefox/Opera
     keynum = e.which;
   }
-  var key = String.fromCharCode(keynum)
+
   e.target.value = keynum
 }
+
 var tag_chips = $('#tag-chips')
 
+function tag_data_to_str(data) {
+  var str = []
+  data.forEach((item, index) => {
+    str.push(item['tag'])
+  });
+  return str
+}
+
+function tag_str_to_data(str) {
+  var data = []
+
+  str = str.split(',')
+
+  str.forEach((item, index) => {
+    data.push({
+      'tag': item
+    })
+  });
+  return data
+}
+
+var tag_input = $('#id_primaryTags')[0]
+
 $('.chips').chips();
-tag_chips.chips({
-  placeholder: 'Enter a tag',
-  secondaryPlaceholder: '+Tag',
-  data: [{
-    tag: 'Apple',
-  }, {
-    tag: 'Microsoft',
-  }, {
-    tag: 'Google',
-  }],
-  onChipAdd: (event, chip) => {
-    console.log(event[0].M_Chips.chipsData)
-  },
-  onChipDelete: (event, chip) => {
-    console.log(event[0].M_Chips.chipsData)
-  }
-});
+if (initial_tag_data) {
+  tag_chips.chips({
+    placeholder: 'Enter a tag',
+    secondaryPlaceholder: '+Tag',
+    data: tag_str_to_data(initial_tag_data),
+    onChipAdd: (event, chip) => {
+      var $this = event[0].M_Chips;
+      $this.chipsData.forEach(function(event, index) {
+        if ((event.tag.length > 30))
+          $this.deleteChip(index);
+      });
 
-var tag_chips_0 = $('#tag-chips')[0]
-
-$('#form').submit(function() { //listen for submit event
-  $('<input />').attr('type', 'hidden')
-    .attr('tags', tag_chips_0.M_Chips.chipsData)
-    .attr('fwefe', 'fwefew')
-    .appendTo('#form');
-  return true;
-});
+      tag_input.value = tag_data_to_str($this.chipsData)
+    },
+    onChipDelete: (event, chip) => {
+      tag_input.value = tag_data_to_str($this.chipsData)
+      // console.log(event[0].M_Chips.chipsData)
+    }
+  });
+} else {
+  tag_chips.chips({
+    placeholder: 'Enter a tag',
+    secondaryPlaceholder: '+Tag',
+    onChipAdd: (event, chip) => {
+      tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
+    },
+    onChipDelete: (event, chip) => {
+      tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
+      // console.log(event[0].M_Chips.chipsData)
+    }
+  });
+}

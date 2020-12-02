@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .forms import signupForm
-from .models import User
+from .forms import signupForm, BoardModelForm, configureUserForm
+from .models import User, BoardModel
 
 
 def home(request):
@@ -56,20 +56,74 @@ def signup(request):
 
 
 def dashboard(request):
-    return render(request=request, template_name="main/dashboard.html")
+    board_list = request.user.boards()
+    return render(request=request, template_name="main/dashboard.html", context={'board_list': board_list})
 
 
-def board(request):
-    return render(request=request, template_name="main/board.html")
+def board(request, boardPk):
+    board = BoardModel.objects.get(pk=boardPk)
+    return render(request=request, template_name="main/board.html", context={'board': board})
 
 
-def snippets(request):
-    return render(request=request, template_name="main/snippets.html")
+def board_config(request, boardPk=None):
 
-
-def configure(request, boardPk=None):
     if request.method == "POST":
-        for i in request.POST:
-            print(i, request.POST[i])
-    return render(request=request, template_name="main/configure.html", context={'boardPk': 1})
+        if 'delete' in request.POST:
+            instance = BoardModel.objects.get(pk=boardPk)
+            instance.delete()
+            return redirect('dashboard')
+        else:
+            print(request.POST)
+            if boardPk:
+                instance = BoardModel.objects.get(pk=boardPk)
+                form = BoardModelForm(
+                    request.POST, request.FILES, instance=instance)
+            else:
+                form = BoardModelForm(request.POST, request.FILES)
+                boardPk = False
+
+            if form.is_valid():
+                new_instance = form.save(commit=False)
+                new_instance.User = request.user
+                new_instance.save()
+                boardPk = new_instance.pk
+
+                return redirect('board', boardPk)
+
+    else:
+        if boardPk:
+            instance = BoardModel.objects.get(pk=boardPk)
+            form = BoardModelForm(instance=instance)
+        else:
+            form = BoardModelForm(initial={'thumbnail': 'default'})
+            boardPk = False
+
+    return render(request=request, template_name="main/configure.html", context={'context': 'Board', 'boardPk': boardPk, 'form': form})
+
+
+def generate_thumbnail(request, boardPk):
+    BoardModel.objects.get(pk=boardPk).create_thumbnail()
+    return redirect('board', boardPk)
+
+
+def video(request, boardPk):
+    board = BoardModel.objects.get(pk=boardPk)
+    return render(request=request, template_name="main/video.html", context={'board': board})
+
+
+def snippets(request, boardPk, snippetPk):
+    return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk})
+
+
+def configure(request):
+    if request.method == "POST":
+        form = configureUserForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+
+    form = configureUserForm(instance=request.user)
+
+    return render(request=request, template_name="main/configure.html", context={'form': form})
 # Create your views here.

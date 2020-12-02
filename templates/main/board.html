@@ -43,66 +43,83 @@
         <div class="col s6">
           <div class="card gradient-primary">
             <div class="card-content">
-              <h3>Manage board</h3>
-              <h6>Add/change video and thumbnail!</h6>
+              <h3>Localize</h3>
+              <h6>Download snippets</h6>
             </div>
 
           </div>
         </div>
         <div class="col s6">
-          <div class="card gradient-secondary">
-            <div class="card-content">
-              <h3>View snippets</h3>
-              <h6>You have 6 snippets</h6>
+          <a href="{% url 'generate_thumbnail' board.pk %}">
+            <div class="card gradient-secondary">
+              <div class="card-content">
+                <h3>Thumbnail</h3>
+                <h6>Generate thumbnail?</h6>
+              </div>
             </div>
-
-          </div>
+          </a>
         </div>
+
         <div class="col s6">
-          <div class="card gradient-tertiary">
-            <div class="card-content">
-              <h3>Cut video</h3>
-              <h6>Create snippets!!</h6>
+          <a href="{% url 'video' board.pk %}">
+            <div class="card gradient-tertiary">
+              <div class="card-content">
+                <h3>Cut video</h3>
+                <h6>Create snippets!!</h6>
+              </div>
             </div>
-
-          </div>
+          </a>
         </div>
-        <div class="col s6">
-          <div class="card gradient-warning">
-            <div class="card-content">
-              <h3>Configure tags</h3>
-              <h6>Change tags? No problem!</h6>
+        <a href="{% url 'board_config' board.pk %}">
+
+          <div class="col s6">
+
+            <div class="card gradient-warning">
+              <div class="card-content">
+                <h3>Configure</h3>
+                <h6>Change tags?</h6>
+              </div>
+
             </div>
+        </a>
 
-          </div>
-        </div>
       </div>
     </div>
-    <div class="col s12 m6 white-text">
-      <h1 class="white-text right">Clips</h1>
-      <div class="row">
-        <div class="col s12">
-          Tags:
-          <div class="chip">
-            Offense
-          </div>
-          <div class="chip">
-            Defense
-          </div>
-          <div class="chip">
-            Side line play
-          </div>
+  </div>
+  <div class="col s12 m6 white-text">
+    <h1 class="white-text right">Clips</h1>
+    <div class="row">
+      <div class="col s12">
+        Tags:
+        {% if board.primaryTags|length > 0 %}
+        {% for t in board.primaryTags %}
+        <div class="chip">
+          {{t}}
         </div>
-        <div class="col s12">
-          <div class="card-panel center padding-8 gradient-primary">
+        {% endfor %}{% else %}
+        None
+        {% endif %}
+
+
+      </div>
+      <div class="col s12">
+        <div class="card-panel center padding-8 gradient-primary">
+          <form method="post">
+            {% csrf_token %}
+
             <h4 class="white-text">New filter set:
             </h4>
-            <div class="chips chips-initial" style="white-text">
+            <h6>Returns snippets that matches query</h6>
+            <div id="query-chips" class="chips" style="white-text">
             </div>
+            <input type="hidden" id="query" name="query" type="text">
+
             <button type="submit" name="button" class="btn gradient-success" style="width:100%">Go!</button>
-          </div>
+          </form>
+
         </div>
-        <div class="col s12 m6 hide-on-med-and-down">
+      </div>
+      <!-- <div class="col s12 m6 hide-on-med-and-down">
           <div class="card-panel center gradient-secondary">
             <div class="chip">
               Offense
@@ -164,11 +181,11 @@
                 <h5 class="center" style="padding-left:10px">Baby yoda abducted your results :p</h5>
               </li>
           </div>
-        </div>
-      </div>
-
+        </div> -->
     </div>
+
   </div>
+</div>
 </div>
 
 
@@ -196,7 +213,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
               fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
               himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="{% url 'snippets' %}">View board 1</a>
+            <a class="btn" href="{% url 'snippets' board.pk 1 %}">View board 1</a>
           </div>
         </div>
       </div>
@@ -251,9 +268,17 @@
 </footer>
 <style media="screen">
   .bgimg {
-    background-image: url('../media/images/field-bg.jpg')
+    background-image: url({{board.thumbnail.url|safe}})
   }
 </style>
+
+<script type="text/javascript">
+  var tag_autocomplete_data = {
+    {
+      board.primaryTags | safe
+    }
+  }
+</script>
 
 {% load static %}
 <script src="{% static 'js/dashboard.js' %}" charset="utf-8"></script>

@@ -37,8 +37,83 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main.apps.MainConfig'
+    'main.apps.MainConfig',
+    'sorl.thumbnail',
+    'video_encoding',
+    'django_rq'
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# Use the same redis as with caches for RQ
+RQ_QUEUES = {
+    'default': {
+        'USE_REDIS_CACHE': 'default',
+    },
+    'high': {
+        'USE_REDIS_CACHE': 'default',
+        'DEFAULT_TIMEOUT': 3600,
+    },
+    'low': {
+        'USE_REDIS_CACHE': 'default',
+    },
+}
+
+VIDEO_ENCODING_FORMATS = {
+    'FFmpeg': [
+        {
+            'name': 'webm_sd',
+            'extension': 'webm',
+            'params': [
+                '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
+                '-codec:v', 'libvpx', '-r', '30',
+                '-vf', 'scale=-1:480', '-qmin', '10', '-qmax', '42',
+                '-codec:a', 'libvorbis', '-b:a', '128k', '-f', 'webm',
+            ],
+        },
+    ]
+}
+
+STREAM_FORMAT = 'webm_sd'
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'simple': {
+#             'format': '%(asctime)s %(levelname)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },
+#     },
+#
+#     'loggers': {
+#         'django.request': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'rq_scheduler': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +138,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },

@@ -5,9 +5,9 @@
 <nav role="navigation" id="topnav" class="transparent-bg z-depth-0 topnav-fixed canvas-wrapper">
   <canvas class="canvas-basic"></canvas>
   <div class="nav-wrapper">
-    <a href="#" class="brand-logo center">ProjectBalls</a>
+    <a href="#" class="brand-logo left" style="padding-left:15px">ProjectBalls</a>
     <ul class="right">
-      <li><a href="{% url 'configure' %}"><i class="material-icons right">settings</i>Configure</a></li>
+      <li><a href="{% url 'configure' %}">Configure</a></li>
 
       <li><a href="{% url 'logout' %}"><i class="material-icons right">logout</i>Logout</a></li>
     </ul>
@@ -22,7 +22,7 @@
         <div class="col s6">
           <div class="card gradient-primary">
             <div class="card-content">
-              <h3>Recent Activities</h3>
+              <h3>Recents</h3>
               <h6>Pick up on board 3!</h6>
             </div>
 
@@ -31,7 +31,7 @@
         <div class="col s6">
           <div class="card gradient-secondary">
             <div class="card-content">
-              <h3>View boards</h3>
+              <h3>Boards</h3>
               <h6>You have 4 boards</h6>
             </div>
 
@@ -46,15 +46,16 @@
 
           </div>
         </div>
-        <div class="col s6">
-          <div class="card gradient-warning">
-            <div class="card-content">
-              <h3>Configure</h3>
-              <h6>Change controls? No problem!</h6>
+        <a href="{% url 'configure' %}">
+          <div class="col s6">
+            <div class="card gradient-warning">
+              <div class="card-content">
+                <h3>Configure</h3>
+                <h6>Change controls? No problem!</h6>
+              </div>
             </div>
-
           </div>
-        </div>
+        </a>
       </div>
     </div>
     <div class="col s12 m6 white-text">
@@ -74,76 +75,20 @@
         </div>
         <div class="col s12">
           <div class="card-panel center padding-8 gradient-primary">
-            <h4 class="white-text">New filter set:
-            </h4>
-            <div class="chips chips-initial" style="white-text">
-            </div>
-            <button type="submit" name="button" class="btn gradient-success" style="width:100%">Go!</button>
-          </div>
-        </div>
-        <div class="col s12 m6 hide-on-med-and-down">
-          <div class="card-panel center gradient-secondary">
-            <div class="chip">
-              Offense
-            </div>
-            <div class="chip">
-              Defense
-            </div>
-            <ul class="collection white-text scrollable" style="height:35vh;border:0">
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 2<span class="new blue badge" data-badge-caption="snippets">3</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-            </ul>
-          </div>
+            <form method="post">
+              {% csrf_token %}
+              <h4 class="white-text">Filter by:
+              </h4>
+              <h6>Returns snippets that matches query</h6>
+              <div name="query-chips" id="query-chips" class="chips" style="white-text">
+              </div>
+              <input type="hidden" id="query" name="query" type="text" >
 
-        </div>
-        <div class="col s12 m6 hide-on-med-and-down">
-          <div class="card-panel center gradient-tertiary">
-            <div class="chip">
-              Offense
-            </div>
-            <div class="chip">
-              Defense
-            </div>
-            <div class="chip">
-              Something else
-            </div>
-            <ul class="collection white-text" style="height:35vh; border:0;">
-              <li class="collection-item row transparent-bg" style="height:100%">
-                <img class="responsive-img" src="../media/images/yoda.jpg" alt="baby yoda">
-                <h5 class="center" style="padding-left:10px">Baby yoda abducted your results :p</h5>
-              </li>
+              <button type="submit" name="button" class="btn gradient-success" style="width:100%">Go!</button>
+            </form>
           </div>
         </div>
+
       </div>
 
     </div>
@@ -153,40 +98,28 @@
 
 <div class="section-larger" id="home-content1">
   <div class="container-small">
-    <h1 class="gradient-primary-text homepage-name">Boards</h1>
-    <h4 class="center">Each board denotes a video you wanna edit</h4>
+    <h1 class="gradient-primary-text">Boards</h1>
+    <h4>Each board denotes a video you wanna edit</h4>
     <div class="row">
+      {% load thumbnail %}
+      {% for board in board_list %}
       <div class="col s12 m6 l4">
         <div class="card">
           <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1</span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 2</span>
+            <img class="activator bgimg" src="{% thumbnail board.thumbnail '1600x900' crop='center' as im %}{{ im.url }}{% endthumbnail %}">
+            <span class=" card-title activator white-text">{{board.Name}}</span>
           </div>
 
           <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+            <span class="card-title grey-text text-darken-4">{{board.Name}}<i class="material-icons right">close</i></span>
+            <p>{{board.Description}}</p>
+            <a class="btn" href="{% url 'board' board.pk %}">View {{board.Name}}</a>
           </div>
         </div>
       </div>
+      {% endfor %}
       <div class="col s12">
-        <a href="{% url 'board' %}">
+        <a href="{% url 'board_config' %}">
           <div class="card-panel center padding-8 canvas-wrapper">
             <canvas class="canvas-basic" width="300" height="300"></canvas>
             <h4 class="white-text">Add board
@@ -230,6 +163,8 @@
     background-image: url('../media/images/field-bg.jpg')
   }
 </style>
+
+
 
 {% load static %}
 <script src="{% static 'js/dashboard.js' %}" charset="utf-8"></script>
