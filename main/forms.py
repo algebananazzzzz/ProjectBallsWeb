@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, BoardModel
+from .models import User, BoardModel, SnippetModel
 from django.contrib.auth.forms import UserCreationForm
 
 

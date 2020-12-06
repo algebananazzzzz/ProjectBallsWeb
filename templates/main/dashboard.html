@@ -20,32 +20,15 @@
       <h1>Actions</h1>
       <div class="row">
         <div class="col s6">
-          <div class="card gradient-primary">
-            <div class="card-content">
-              <h3>Recents</h3>
-              <h6>Pick up on board 3!</h6>
-            </div>
-
-          </div>
-        </div>
-        <div class="col s6">
           <div class="card gradient-secondary">
             <div class="card-content">
               <h3>Boards</h3>
-              <h6>You have 4 boards</h6>
+              <h6>You have {{board_count}} boards</h6>
             </div>
 
           </div>
         </div>
-        <div class="col s6">
-          <div class="card gradient-tertiary">
-            <div class="card-content">
-              <h3>Present</h3>
-              <h6>You wanted to present this...</h6>
-            </div>
 
-          </div>
-        </div>
         <a href="{% url 'configure' %}">
           <div class="col s6">
             <div class="card gradient-warning">
@@ -113,7 +96,7 @@
           <div class="card-reveal">
             <span class="card-title grey-text text-darken-4">{{board.Name}}<i class="material-icons right">close</i></span>
             <p>{{board.Description}}</p>
-            <a class="btn" href="{% url 'board' board.pk %}">View {{board.Name}}</a>
+            <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0 " href="{% url 'board' board.pk %}" style="width:100%">View {{board.Name}}</a>
           </div>
         </div>
       </div>
@@ -158,6 +141,9 @@
     </div>
   </div>
 </footer>
+<script type="text/javascript">
+  var tag_autocomplete_data = {{tag_autocomplete_data|safe}}
+</script>
 <style media="screen">
   .bgimg {
     background-image: url('../media/images/field-bg.jpg')

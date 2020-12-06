@@ -1,8 +1,64 @@
+import json
+import os
+from django.conf import settings
+import django_rq
+import zipfile
+import io
+from pathlib import Path
+from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
 from django.contrib import auth
+from urllib.parse import unquote
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .forms import signupForm, BoardModelForm, configureUserForm
-from .models import User, BoardModel
+from .models import User, BoardModel, SnippetModel
+from .tasks import create_snippet
+
+
+def download(request, snippetPk):
+    object = SnippetModel.objects.get(pk=snippetPk)
+    filename = object.videoFile.name.split('/')[-1]
+    response = HttpResponse(object.videoFile, content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
+
+
+def download_board(request, boardPk):
+    board = BoardModel.objects.get(pk=boardPk)
+    filenames = list()
+
+    for i in board.snippets():
+        filenames.append(i.videoFile.path)
+
+    zip_subdir = board.Name
+    zip_filename = "%s.zip" % zip_subdir
+
+    # Open BytesIO to grab in-memory ZIP contents
+    s = io.BytesIO()
+
+    # The zip compressor
+    zf = zipfile.ZipFile(s, "w")
+
+    for fpath in filenames:
+        # Calculate path for file in zip
+        fdir, fname = os.path.split(fpath)
+        zip_path = os.path.join(zip_subdir, fname)
+
+        # Add file, at correct path
+        zf.write(fpath, zip_path, compress_type=zipfile.ZIP_DEFLATED)
+
+    # Must close zip for all contents to be written
+    zf.close()
+
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = HttpResponse(
+        s.getvalue(), content_type="application/x-zip-compressed")
+    # ..and correct content-disposition
+    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+    return resp
 
 
 def home(request):
@@ -22,6 +78,9 @@ def login(request):
             if user is not None:
                 auth.login(request, user)
                 # messages.info(request, f"Hello, {username}")
+                messages.add_message(
+                    request, messages.INFO, 'Welcome back!! :)')
+
                 return redirect("/dashboard")
         else:
             form_message = "Invalid username or password."
@@ -30,6 +89,7 @@ def login(request):
 
 
 def logout(request):
+    messages.add_message(request, messages.WARNING, 'You have logged out :o')
     auth.logout(request)
     return redirect("/")
 
@@ -46,6 +106,8 @@ def signup(request):
             form.save()
             user = authenticate(username=username, password=raw_password)
             auth.login(request, user)
+            messages.add_message(
+                request, messages.INFO, 'Welcome here!! :)')
 
             return redirect('/dashboard')
 
@@ -56,13 +118,32 @@ def signup(request):
 
 
 def dashboard(request):
+    if request.method == "POST":
+        query = request.POST['query'].strip('][').split(', ')
+        snippets = SnippetModel.objects.filter(Tags__contains=query)
+        messages.add_message(request, messages.SUCCESS,
+                             'Query successful!! :)')
+
+        return render(request=request, template_name="main/snippets.html", context={'snippets': snippets})
+
     board_list = request.user.boards()
-    return render(request=request, template_name="main/dashboard.html", context={'board_list': board_list})
+    tag_autocomplete_data = request.user.allTags
+    return render(request=request, template_name="main/dashboard.html", context={'board_list': board_list, 'tag_autocomplete_data': tag_autocomplete_data, 'board_count': board_list.count()})
 
 
 def board(request, boardPk):
     board = BoardModel.objects.get(pk=boardPk)
-    return render(request=request, template_name="main/board.html", context={'board': board})
+
+    if request.method == "POST":
+        query = request.POST['query'].strip('][').split(', ')
+        snippets = SnippetModel.objects.filter(
+            Board=board, Tags__contains=query)
+        messages.add_message(request, messages.SUCCESS,
+                             'Query successful!! :)')
+
+        return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk, 'snippets': snippets})
+
+    return render(request=request, template_name="main/board.html", context={'board': board, 'snippets': board.snippets()})
 
 
 def board_config(request, boardPk=None):
@@ -73,7 +154,6 @@ def board_config(request, boardPk=None):
             instance.delete()
             return redirect('dashboard')
         else:
-            print(request.POST)
             if boardPk:
                 instance = BoardModel.objects.get(pk=boardPk)
                 form = BoardModelForm(
@@ -103,16 +183,48 @@ def board_config(request, boardPk=None):
 
 def generate_thumbnail(request, boardPk):
     BoardModel.objects.get(pk=boardPk).create_thumbnail()
+    messages.add_message(request, messages.WARNING,
+                         "I'm working really hard here, gimme a moment :o")
+
+    return redirect('board', boardPk)
+
+
+def delete_snippet(request, boardPk, snippetPk):
+    SnippetModel.objects.get(pk=snippetPk).delete()
     return redirect('board', boardPk)
 
 
 def video(request, boardPk):
+    user = request.user
     board = BoardModel.objects.get(pk=boardPk)
-    return render(request=request, template_name="main/video.html", context={'board': board})
+
+    if request.method == "POST":
+        data = json.loads(unquote(unquote(request.POST['data'])))
+
+        for i in data:
+            django_rq.enqueue(create_snippet, board, i)
+            messages.add_message(request, messages.INFO,
+                                 "Creating snippet of " + i['name'])
+
+        messages.add_message(request, messages.WARNING,
+                             "Hmmmm, this may take a moment so don't freak out!! (Encoding ur snippets at the backend!!)")
+
+        return redirect('board', boardPk)
+
+    video_path = board.get_mpd_videofile_url()
+
+    return render(request=request, template_name="main/video.html", context={'board': board, 'video_path': video_path, 'start_recording_key': user.start_recording_key, 'end_recording_key': user.end_recording_key, 'cancel_recording_key': user.cancel_recording_key})
 
 
-def snippets(request, boardPk, snippetPk):
-    return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk})
+def snippet_video(request, boardPk, snippetPk):
+    snippet = SnippetModel.objects.get(pk=snippetPk)
+
+    video_path = '/media/users/snippets/' + \
+        Path(snippet.videoFile.name).stem + '.mp4'
+
+    thumbnail_url = snippet.get_thumbnail_url()
+
+    return render(request=request, template_name="main/snippet-video.html", context={'boardPk': boardPk, 'thumbnail_url': thumbnail_url, 'video_path': video_path})
 
 
 def configure(request):

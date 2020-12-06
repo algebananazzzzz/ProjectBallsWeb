@@ -26,73 +26,69 @@ $('.canvas-basic').each(function() {
   });
 });
 
-function myKeyPress(e) {
-  var keynum;
+$('.myKeyPress').keyup(function(event) {
+  var keyCode = (event.keyCode ? event.keyCode : event.which);
 
-  if (window.event) { // IE
-    keynum = e.keyCode;
-  } else if (e.which) { // Netscape/Firefox/Opera
-    keynum = e.which;
+  event.target.value = keyCode
+})
+
+if (initial_tag_data) {
+  var tag_chips = $('#tag-chips')
+
+  function tag_data_to_str(data) {
+    var str = []
+    data.forEach((item, index) => {
+      str.push(item['tag'])
+    });
+    return str
   }
 
-  e.target.value = keynum
-}
+  function tag_str_to_data(str) {
+    var data = []
 
-var tag_chips = $('#tag-chips')
+    str = str.split(',')
 
-function tag_data_to_str(data) {
-  var str = []
-  data.forEach((item, index) => {
-    str.push(item['tag'])
-  });
-  return str
-}
+    str.forEach((item, index) => {
+      data.push({
+        'tag': item
+      })
+    });
+    return data
+  }
 
-function tag_str_to_data(str) {
-  var data = []
+  var tag_input = $('#id_primaryTags')[0]
 
-  str = str.split(',')
+  $('.chips').chips();
+  if (initial_tag_data) {
+    tag_chips.chips({
+      placeholder: 'Enter a tag',
+      secondaryPlaceholder: '+Tag',
+      data: tag_str_to_data(initial_tag_data),
+      onChipAdd: (event, chip) => {
+        var $this = event[0].M_Chips;
+        $this.chipsData.forEach(function(event, index) {
+          if ((event.tag.length > 30))
+            $this.deleteChip(index);
+        });
 
-  str.forEach((item, index) => {
-    data.push({
-      'tag': item
-    })
-  });
-  return data
-}
-
-var tag_input = $('#id_primaryTags')[0]
-
-$('.chips').chips();
-if (initial_tag_data) {
-  tag_chips.chips({
-    placeholder: 'Enter a tag',
-    secondaryPlaceholder: '+Tag',
-    data: tag_str_to_data(initial_tag_data),
-    onChipAdd: (event, chip) => {
-      var $this = event[0].M_Chips;
-      $this.chipsData.forEach(function(event, index) {
-        if ((event.tag.length > 30))
-          $this.deleteChip(index);
-      });
-
-      tag_input.value = tag_data_to_str($this.chipsData)
-    },
-    onChipDelete: (event, chip) => {
-      tag_input.value = tag_data_to_str($this.chipsData)
-      // console.log(event[0].M_Chips.chipsData)
-    }
-  });
-} else {
-  tag_chips.chips({
-    placeholder: 'Enter a tag',
-    secondaryPlaceholder: '+Tag',
-    onChipAdd: (event, chip) => {
-      tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
-    },
-    onChipDelete: (event, chip) => {
-      tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
-      // console.log(event[0].M_Chips.chipsData)
-    }
-  });
+        tag_input.value = tag_data_to_str($this.chipsData)
+      },
+      onChipDelete: (event, chip) => {
+        tag_input.value = tag_data_to_str($this.chipsData)
+        // console.log(event[0].M_Chips.chipsData)
+      }
+    });
+  } else {
+    tag_chips.chips({
+      placeholder: 'Enter a tag',
+      secondaryPlaceholder: '+Tag',
+      onChipAdd: (event, chip) => {
+        tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
+      },
+      onChipDelete: (event, chip) => {
+        tag_input.value = tag_data_to_str(event[0].M_Chips.chipsData)
+        // console.log(event[0].M_Chips.chipsData)
+      }
+    });
+  }
 }

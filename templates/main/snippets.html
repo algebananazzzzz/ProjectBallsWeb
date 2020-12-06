@@ -6,7 +6,9 @@
   <div class="nav-wrapper" style="padding-left:15px">
     <div class="center">
       <a href="{% url 'dashboard' %}" class="breadcrumb">Dashboard</a>
+      {% if boardPk %}
       <a href="{% url 'board' boardPk %}" class="breadcrumb">Board</a>
+      {% endif %}
       <a class="breadcrumb">Snippets</a>
 
     </div>
@@ -21,140 +23,47 @@
     <h4 class="center">All the snippets matching your query</h4>
 
 
-    <div class="row">
-      <div class="col s12 center">
-        <div class="chip">
-          Offense
-        </div>
-        <div class="chip">
-          Defense
-        </div>
-      </div>
+    <div class="row section">
+
+      {% if snippets.count == 0%}
+      <h5 class="center">No snippets found :p</h5>
+      {% else %}
+      {% load thumbnail %}
+      {% for snippet in snippets %}
       <div class="col s12 m6 l4">
         <div class="card">
           <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1
-
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="#">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 2
-            </span>
+            <img class="activator bgimg" src="{% thumbnail snippet.thumbnail '1600x900' crop='center' as im %}{{ im.url }}{% endthumbnail %}">
+            <span class=" card-title activator white-text">
+              {{snippet.Name}}
+              <br>
+              {% if snippet.not_tag_blank %}
+              {% for i in snippet.Tags %}
+              <div class="chip">
+                {{i}}
+              </div>
+              {% endfor %}
+            {% endif %}
+          </span>
           </div>
 
           <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+            <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
+            {% if boardPk %}
+            <a class="btn" href="{% url 'snippet_video' boardPk snippet.pk %}">View {{snippet.Name}}</a>
+            {% else %}
+            <a class="btn" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
+            {% endif %}
+             <a class="btn" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
           </div>
         </div>
       </div>
+      {% endfor %}
+      {% endif %}
 
-    </div>
+
   </div>
+</div>
 </div>
 
 
