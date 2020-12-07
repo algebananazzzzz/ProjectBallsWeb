@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>ProjectBalls</title>
+  <link rel="shortcut icon" type="image/png" href="/media/images/favicon.ico"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Kalam">
 
   <!-- material icons stylesheet -->
@@ -24,6 +25,43 @@
 </head>
 
 <body>
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.tags == 'success'%}
+  <script>
+    M.toast({
+      html: "{{message}}",
+      classes: 'gradient-success rounded',
+      displayLength: 2000
+    });
+  </script>
+  {% elif message.tags == 'info'%}
+  <script>
+    M.toast({
+      html: "{{message}}",
+      classes: 'gradient-primary rounded',
+      displayLength: 2000
+    });
+  </script>
+  {% elif message.tags == 'warning'%}
+  <script>
+    M.toast({
+      html: "{{message}}",
+      classes: 'gradient-warning rounded',
+      displayLength: 10000
+    });
+  </script>
+  {% elif message.tags == 'error'%}
+  <script>
+    M.toast({
+      html: "{{message}}",
+      classes: 'gradient-danger rounded',
+      displayLength: 10000
+    });
+  </script>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
   {% block content %}
   {% endblock %}
 </body>

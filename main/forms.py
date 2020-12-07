@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, BoardModel
+from .models import User, BoardModel, SnippetModel
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -30,3 +30,8 @@ class BoardModelForm(forms.ModelForm):
         model = BoardModel
         fields = ('Name', 'primaryTags', 'Description',
                   'videoFile', 'thumbnail')
+    
+    def __init__(self, *args, **kwargs):
+        super(BoardModelForm, self).__init__(*args, **kwargs)
+        self.fields['primaryTags'].required = False
+

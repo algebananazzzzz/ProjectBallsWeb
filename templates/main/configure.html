@@ -128,24 +128,28 @@
           <option value="2">Manually input tags</option>
         </select> -->
 
-        <h5 class="section">Controls</h5>
+        <h5 class="section" >Controls</h5 >
         <p>Uses default keycodes (on chrome)</p>
 
-        <div class="input-field">
-          <input value="{{ form.start_recording_key.value|stringformat:'s' }}" id="{{ form.start_recording_key.id_for_label }}" name="{{ form.start_recording_key.name }}" type="number" readonly onkeypress="myKeyPress(event)">
+        <div class="input-field" >
+          <input value="{{ form.start_recording_key.value|stringformat:'s' }}" id="{{ form.start_recording_key.id_for_label }}" name="{{ form.start_recording_key.name }}" type="number" readonly  class="myKeyPress" >
           <label class="active" for="first_name2">Start recording</label>
         </div>
         <div class="input-field">
-          <input value="{{ form.end_recording_key.value|stringformat:'s' }}" id="{{ form.end_recording_key.id_for_label }}" name="{{ form.end_recording_key.name }}" type="number" readonly onkeypress="myKeyPress(event)">
+          <input value="{{ form.end_recording_key.value|stringformat:'s' }}" id="{{ form.end_recording_key.id_for_label }}" name="{{ form.end_recording_key.name }}" type="number" readonly class="myKeyPress">
           <label class="active" for="first_name2">End recording</label>
         </div>
         <div class="input-field">
-          <input value="{{ form.cancel_recording_key.value|stringformat:'s' }}" id="{{ form.cancel_recording_key.id_for_label }}" name="{{ form.cancel_recording_key.name }}" readonly onkeypress="myKeyPress(event)">
+          <input value="{{ form.cancel_recording_key.value|stringformat:'s' }}" id="{{ form.cancel_recording_key.id_for_label }}" name="{{ form.cancel_recording_key.name }}" type="number" readonly class="myKeyPress">
           <label class="active" for="first_name2">Cancel recording</label>
         </div>
 
         <button type="submit" class="btn gradient-success" style="width:100%">Configure</button>
       </form>
+      <script type="text/javascript">
+        var initial_tag_data = false;
+      </script>
+
       {% endif %}
     </div>
   </div>

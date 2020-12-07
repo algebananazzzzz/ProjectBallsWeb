@@ -17,37 +17,20 @@
   <div class="row display-container container-small" style="padding-top:64px">
     <div class="col s12 m6 white-text">
       <h1>Actions</h1>
-      <div class="row">
-        <div class="col s12">
-          <div class="alert gradient-warning alert-dismissible fade show" role="alert">
-            You have yet to assign a video to edit. ProjectBalls won't work properly without it! <a href="#" class="alert-link">Do it here!</a>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col s12">
 
-          <div class="alert gradient-info alert-dismissible fade show" role="alert">
-            Assuming default configuration for snippet tags. <a href="#" class="alert-link">Change it here!</a>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col s6">
-          <div class="card gradient-primary">
-            <div class="card-content">
-              <h3>Localize</h3>
-              <h6>Download snippets</h6>
-            </div>
+          <a target="_blank" href="{% url 'download_board' board.pk %}">
 
-          </div>
+            <div class="card gradient-primary">
+              <div class="card-content">
+                <h3>Localize</h3>
+                <h6>Download snippets</h6>
+              </div>
+
+            </div>
+          </a>
         </div>
         <div class="col s6">
           <a href="{% url 'generate_thumbnail' board.pk %}">
@@ -119,69 +102,7 @@
 
         </div>
       </div>
-      <!-- <div class="col s12 m6 hide-on-med-and-down">
-          <div class="card-panel center gradient-secondary">
-            <div class="chip">
-              Offense
-            </div>
-            <div class="chip">
-              Defense
-            </div>
-            <ul class="collection white-text scrollable" style="height:35vh;border:0">
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 1<span class="new blue badge" data-badge-caption="snippets">1</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 2<span class="new blue badge" data-badge-caption="snippets">3</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-              <li class="collection-item row transparent-bg">
-                <h5 class="left" style="padding-left:10px">Board 3<span class="new blue badge" data-badge-caption="snippets">2</span> </h5>
-                <a href="#!"><i class="material-icons gradient-info-text right">arrow_forward</i></a>
-              </li>
-            </ul>
-          </div>
 
-        </div>
-        <div class="col s12 m6 hide-on-med-and-down">
-          <div class="card-panel center gradient-tertiary">
-            <div class="chip">
-              Offense
-            </div>
-            <div class="chip">
-              Defense
-            </div>
-            <div class="chip">
-              Something else
-            </div>
-            <ul class="collection white-text" style="height:35vh; border:0;">
-              <li class="collection-item row transparent-bg" style="height:100%">
-                <img class="responsive-img" src="../media/images/yoda.jpg" alt="baby yoda">
-                <h5 class="center" style="padding-left:10px">Baby yoda abducted your results :p</h5>
-              </li>
-          </div>
-        </div> -->
     </div>
 
   </div>
@@ -194,46 +115,46 @@
     <h1 class="gradient-primary-text homepage-name">Snippets</h1>
     <h4 class="center">Your snippets saved for this board</h4>
     <div class="row">
+      {% load thumbnail %}
+      {% for snippet in snippets %}
       <div class="col s12 m6 l4">
         <div class="card">
           <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 1 <br>
+            <img class="activator bgimg" src="{% thumbnail snippet.thumbnail '1600x900' crop='center' as im %}{{ im.url }}{% endthumbnail %}">
+            <span class=" card-title activator white-text">
+              {{snippet.Name}}
+              <br>
+              {% if snippet.not_tag_blank %}
+              {% for i in snippet.Tags %}
               <div class="chip">
-                Offense
+                {{i}}
               </div>
-              <div class="chip">
-                Defense
-              </div>
-            </span>
-
-          </div>
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Board 1<i class="material-icons right">close</i></span>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In mattis rhoncus elit eu pulvinar. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam libero sapien, euismod quis velit ut,
-              fringilla cursus lorem. Sed sed orci at tellus tempor scelerisque ut sed enim. Integer sit amet augue fermentum, vestibulum nulla quis, pharetra mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-              himenaeos. Phasellus convallis ligula dolor, congue pulvinar nunc consequat quis. Duis eget sem eros. Proin urna lacus, volutpat sed convallis vitae, aliquet eu ex.</p>
-            <a class="btn" href="{% url 'snippets' board.pk 1 %}">View board 1</a>
-          </div>
-        </div>
-      </div>
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="../media/images/ulti-skye-bg.jpg">
-            <span class="card-title activator white-text">Board 2<br>
-              <div class="chip">
-                Offense
-              </div>
+              {% endfor %}
+              {% endif %}
             </span>
           </div>
 
           <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+            <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
+            <div class="row">
+              <div class="col s12 no-padding">
+                <a class="btn-large waves-effect waves-green btn-flat green round-0" href="{% url 'snippet_video' board.pk snippet.pk %}" style="width:100%">View {{snippet.Name}}</a>
+              </div>
+              <div class="col s4 m4 no-padding">
+                <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
+
+              </div>
+
+              <div class="col s8 m8 no-padding">
+                <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}" style="width:100%">Download</a>
+              </div>
+
+            </div>
+
           </div>
         </div>
       </div>
+      {% endfor %}
 
     </div>
   </div>
@@ -273,11 +194,7 @@
 </style>
 
 <script type="text/javascript">
-  var tag_autocomplete_data = {
-    {
-      board.primaryTags | safe
-    }
-  }
+  var tag_autocomplete_data = {{ board.primaryTags | safe }}
 </script>
 
 {% load static %}

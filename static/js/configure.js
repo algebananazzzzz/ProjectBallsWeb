@@ -26,19 +26,14 @@ $('.canvas-basic').each(function() {
   });
 });
 
-function myKeyPress(e) {
-  var keynum;
+$('.myKeyPress').keyup(function(event) {
+  var keyCode = (event.keyCode ? event.keyCode : event.which);
 
-  if (window.event) { // IE
-    keynum = e.keyCode;
-  } else if (e.which) { // Netscape/Firefox/Opera
-    keynum = e.which;
-  }
-
-  e.target.value = keynum
-}
+  event.target.value = keyCode
+})
 
 var tag_chips = $('#tag-chips')
+var tag_input = $('#id_primaryTags')[0]
 
 function tag_data_to_str(data) {
   var str = []
@@ -48,23 +43,21 @@ function tag_data_to_str(data) {
   return str
 }
 
-function tag_str_to_data(str) {
-  var data = []
-
-  str = str.split(',')
-
-  str.forEach((item, index) => {
-    data.push({
-      'tag': item
-    })
-  });
-  return data
-}
-
-var tag_input = $('#id_primaryTags')[0]
-
-$('.chips').chips();
 if (initial_tag_data) {
+
+
+  function tag_str_to_data(str) {
+    var data = []
+
+    str = str.split(',')
+
+    str.forEach((item, index) => {
+      data.push({
+        'tag': item
+      })
+    });
+    return data
+  }
   tag_chips.chips({
     placeholder: 'Enter a tag',
     secondaryPlaceholder: '+Tag',

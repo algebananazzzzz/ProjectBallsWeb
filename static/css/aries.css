@@ -1,44 +1,44 @@
 /* gradients */
 .gradient-primary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #4568dc, #b06ab3);
+  background: linear-gradient(30deg,  #8a2387, #e94057, #f27121);
 }
 
 .gradient-primary-text {
-  background: linear-gradient(30deg, #4568dc, #b06ab3);
+  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-secondary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+  background: linear-gradient(30deg, #8e2de2, #4a00e0);
 }
 
 .gradient-secondary-text {
-  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+  background: linear-gradient(30deg, #8e2de2, #4a00e0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-tertiary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #00e5ff 0%, #00e676 50%, #76ff03 100%);
+  background: linear-gradient(30deg, #56ab2f, #a8e063);
 }
 
 .gradient-tertiary-text {
-  background: linear-gradient(30deg, #00e5ff 0%, #00e676 50%, #76ff03 100%);
+  background: linear-gradient(30deg, #56ab2f, #a8e063);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-success {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #227e22 2.9%, #a8fb3c 90.3%);
+  background: linear-gradient(30deg, #348f50, #56b4d3);
 }
 
 .gradient-success-text {
-  background: linear-gradient(30deg, #227e22 2.9%, #a8fb3c 90.3%);
+  background: linear-gradient(30deg, #348f50, #56b4d3);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

@@ -17,29 +17,32 @@
   <div class=" display-container">
     <div class="display-middle contract-in center white-text">
       <h1 class="homepage-name enter">Project Balls</h1>
-      <h3>A video editing software...</h3>
+      <h3>For coaches :))</h3>
       <h5>Optimized for creating gameplay snippets :p</h5>
     </div>
   </div>
 </div>
 
 
-<div class="section-larger" id="home-content1">
+<div class="section" id="home-content1">
   <div class="container">
-    <h1 class="gradient-primary-text homepage-name">What is Ariesse</h1>
-    <h4>Ariesse is a <b class="gradient-secondary-text">Functional</b>, <b class="gradient-secondary-text">Simplistic</b> and <b class="gradient-secondary-text">Elegant</b> theme based on <b class="gradient-tertiary-text">CSS</b> and <b
-        class="gradient-tertiary-text">Javascript</b>. </h4>
+    <h2 class="gradient-primary-text center">What ProjectBalls does</h2>
+    <h6 class="section">The user story ProjectBalls wanted to solve is the lack of freely available video editing softwares, designed for coaches.</h6>
+    <h6 class="section">ProjectBalls is a <b class="gradient-secondary-text">Functional</b>, <b class="gradient-secondary-text">Simplistic</b> and <b class="gradient-secondary-text">Elegant</b> software aiming to provide ease for coaches in editing
+      snippets from long gameplay videos for students.</h6>
     <div class="center section">
-      <a href="./aries-signup.html" class=" btn-large waves-effect waves-light pink">
+      <a href="{% url 'signup' %}" class=" btn-large canvas-wrapper">
+        <canvas class="canvas-basic"></canvas>
+
         Sign up now!!
       </a>
     </div>
   </div>
 </div>
 
-<div class="section-larger" id="home-content2">
+<!-- <div class="section-larger" id="home-content2">
   <div class="container  left-align">
-    <h1 class="gradient-secondary-text homepage-name left-align">Why choose Ariesse</h1>
+    <h2 class="gradient-secondary-text homepage-name left-align">Why choose ProjectBalls</h2>
     <h4>Features </h4>
     <div class="section-large ">
       <div class="row">
@@ -71,63 +74,39 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
-<div class="section-larger" id="home-content3">
+<div class="section" id="home-content3">
   <div class="container left-align">
 
-    <div class="section-large">
-      <h1 class="gradient-tertiary-text homepage-name right-align">Built for you!</h1>
-      <div class="card-tabs">
-        <ul id="card-tab" class="tabs tabs-fixed-width">
-          <li class="tab gradient-primary-text"><a class="active" href="#test1" style="font-size:25px">Developer</a></li>
-          <li class="tab gradient-secondary-text"><a href="#test2" style="font-size:25px">Client</a></li>
-          <li class="tab gradient-tertiary-text"><a href="#test3" style="font-size:25px">Enterprize</a></li>
-        </ul>
-      </div>
+    <div class="section">
 
       <div class="card-content">
-        <div id="test1" class="section">
+        <div class="section">
           <div class="row">
-            <h4 class="right-align">About the developer interface</h4>
+            <h2 class="gradient-tertiary-text center">Supports for developers</h2>
             <div class="section">
-              <h6 class="right-align" style="font-size:20px">Lorem ipsum dolor sit amet, consectetur <b class="gradient-primary-text">adipiscing</b> elit. Duis dolor lacus, luctus in lectus ut, dignissim cursus augue. In non nisi mi. Mauris
-                placerat
-                mauris ac tellus
-                faucibus, vel vestibulum justo tempus.</h6>
-              <h6 class="right-align" style="font-size:20px">Nunc
-                quis pellentesque
-                lectus. In egestas arcu quis pulvinar viverra. Donec dictum tincidunt sem et iaculis. Integer tincidunt quam libero, a congue dui suscipit et. Nulla finibus faucibus egestas.
-              </h6>
+
               <table class="gradient-primary-striped">
-                <thead>
-                  <tr>
-                    <th>Version</th>
-                    <th>Features</th>
-                    <th>Actions</th>
-
-                  </tr>
-                </thead>
 
                 <tbody>
                   <tr>
-                    <td>0.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">download</i>Download</a>
+                    <td style="padding-left:10px">Source code</td>
+                    <td>Clone your own version of ProjectBalls and hack on it!</td>
+                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">link</i> To Github</a>
                     </td>
                   </tr>
                   <tr>
-                    <td>2.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#" style="padding-right:10px"><i class="material-icons center" style="vertical-align: bottom">download</i>Download,</a>
-                      <a href="#"><i class="material-icons center" style="vertical-align: bottom">share</i>share</a>
+                    <td style="padding-left:10px">Docker image</td>
+                    <td>Get the docker image of this project from docker.io (to come)</td>
+                    <td><a href="#" style="padding-right:10px"><i class="material-icons center" style="vertical-align: bottom">link</i> To docker.io</a>
                     </td>
                   </tr>
                   <tr>
-                    <td>3.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">download</i>Download</a>
+                    <td style="padding-left:10px">Issues</td>
+                    <td>File an issue at Github if there are any</td>
+                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">link</i> Github</a>
                     </td>
                   </tr>
                 </tbody>
@@ -136,76 +115,7 @@
 
           </div>
         </div>
-        <div id="test2" class="row section">
-          <div class="col s12 m8 no-padding">
-            <h4 class="left-align">About the client interface</h4>
-            <div class="section">
-              <h6 class="left-align" style="font-size:20px">Lorem ipsum dolor sit amet, consectetur <b class="gradient-primary-text">adipiscing</b> elit. Duis dolor lacus, luctus in lectus ut, dignissim cursus augue. In non nisi mi. Mauris
-                placerat
-                mauris ac tellus
-                faucibus, vel vestibulum justo tempus.</h6>
-              <h6 class="left-align" style="font-size:20px">Nunc
-                quis pellentesque
-                lectus. In egestas arcu quis pulvinar viverra. Donec dictum tincidunt sem et iaculis. Integer tincidunt quam libero, a congue dui suscipit et. Nulla finibus faucibus egestas.
-              </h6>
-              <div class="section">
-                <a class="waves-effect btn-large canvas-wrapper ">
-                  <canvas class="canvas-basic"></canvas>
-                  Download now!</a>
-              </div>
-            </div>
-          </div>
-          <div class="col s12 m4 ">
-            <img class="materialboxed responsive-img opacity-half hover-opacity-off round-2" src="../images/signup-template.png" alt="Signup template">
-          </div>
-        </div>
-        <div id="test3" class="section">
-          <div class="row">
-            <h4 class="right-align">About the enterprize interface</h4>
-            <div class="section">
-              <h6 class="right-align" style="font-size:20px">Lorem ipsum dolor sit amet, consectetur <b class="gradient-primary-text">adipiscing</b> elit. Duis dolor lacus, luctus in lectus ut, dignissim cursus augue. In non nisi mi. Mauris
-                placerat
-                mauris ac tellus
-                faucibus, vel vestibulum justo tempus.</h6>
-              <h6 class="right-align" style="font-size:20px">Nunc
-                quis pellentesque
-                lectus. In egestas arcu quis pulvinar viverra. Donec dictum tincidunt sem et iaculis. Integer tincidunt quam libero, a congue dui suscipit et. Nulla finibus faucibus egestas.
-              </h6>
-              <table class="gradient-dark-highlight">
-                <thead>
-                  <tr>
-                    <th>Version</th>
-                    <th>Features</th>
-                    <th>Actions</th>
 
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr>
-                    <td>0.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">download</i>Download</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#" style="padding-right:10px"><i class="material-icons center" style="vertical-align: bottom">download</i>Download</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3.0.1</td>
-                    <td>Interdum et malesuada fames ac ante ipsum primis in faucibus.</td>
-                    <td><a href="#"><i class="material-icons center" style="vertical-align: bottom">download</i>Download</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -232,9 +142,10 @@
     </div>
     <div class="footer-copyright">
       <div class="container">
-        Made by <a class="white-text text-lighten-3" href="https://github.com/algebananazzzzz" target="_blank">algebananazzzzz</a>, adapted from <a class="white-text text-lighten-3" href="https://materializecss.com" target="_blank">Materialize</a>
-        <span class="right ">Photo by <a class="white-text" href="https://unsplash.com/s/photos/ultimate-frisbee?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">John Kofi</a> on <a
-            href="https://unsplash.com/s/photos/sports?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" class="white-text">Unsplash</a></span>
+
+        Made by <a class="white-text text-lighten-3" href="https://github.com/algebananazzzzz" target="_blank">algebananazzzzz</a>
+        <span class="right ">Photo by <a class="white-text" href="https://unsplash.com/@jakobowens1?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Jakob Owens</a> on <a
+            href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" class="white-text">Unsplash</a></span>
       </div>
     </div>
   </div>
