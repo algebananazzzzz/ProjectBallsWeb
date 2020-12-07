@@ -222,9 +222,12 @@ def video(request, boardPk):
 def snippet_video(request, boardPk, snippetPk):
     snippet = SnippetModel.objects.get(pk=snippetPk)
 
+<<<<<<< HEAD
     for i in snippet.Tags:
         print(i)
 
+=======
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
     video_path = '/media/users/snippets/' + \
         Path(snippet.videoFile.name).stem + '.mp4'
 

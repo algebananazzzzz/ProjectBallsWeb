@@ -36,11 +36,19 @@
       <form method="post">
         {% csrf_token %}
         <input type="hidden" id="hidden_input" name="data" value="%5B%5D">
+<<<<<<< HEAD
         <ul id="list" class="collapsible popout">
           <li class="active" id="new_form">
             <div id="header" class="collapsible-header"><i class="material-icons">add</i>Add snippet</div>
 
             <div class="collapsible-body"><span>Parameters for snippet, submit form to create!!</span>
+=======
+      <ul id="list" class="collapsible popout">
+        <li class="active" id="new_form">
+          <div id="header" class="collapsible-header"><i class="material-icons">add</i>Add snippet</div>
+
+          <div class="collapsible-body"><span>Parameters for snippet, submit form to create!!</span>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 
               <div class="input-field">
                 <input class="validate require-count" id="name" name="name" type="text" required data-length="50">
@@ -53,18 +61,28 @@
               <div class="row">
                 <div class="col s6">
                   <div class="input-field">
+<<<<<<< HEAD
                     <input class="validate" required placeholder="" id="start_time" name="start_time" type="number" step="0.01" min="0" required>
                     <label for="start_time">Start time</label>
+=======
+                    <input  class="validate" required placeholder="" id="start_time" name="start_time" type="number" step="0.01" min="0" required>
+                    <label for="start_time" >Start time</label>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
                   </div>
                 </div>
                 <div class="col s6">
                   <div class="input-field">
                     <input class="validate" required placeholder="" id="end_time" name="end_time" type="number" step="0.01" min="0" required>
+<<<<<<< HEAD
                     <label for="end_time">End time</label>
+=======
+                    <label for="end_time" >End time</label>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
                   </div>
                 </div>
               </div>
 
+<<<<<<< HEAD
               <input type="hidden" id="new_tags" name="tags" value="" type="text">
 
               <a class="btn gradient-secondary" onclick="comfirm_snippet(this)" style="width:100%">Ok!</a>
@@ -74,6 +92,17 @@
         </ul>
         <button type="submit" onclick="remove_new()" class="btn gradient-success" style="width:100%">I'm done!</button>
       </form>
+=======
+              <input  type="hidden" id="new_tags" name="tags" value="" type="text">
+
+              <a class="btn gradient-secondary" onclick="comfirm_snippet(this)" style="width:100%">Ok!</a>
+
+          </div>
+        </li>
+      </ul>
+      <button type="submit" onclick="remove_new()" class="btn gradient-success" style="width:100%">I'm done!</button>
+    </form>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 
     </div>
 

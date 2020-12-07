@@ -43,8 +43,13 @@
                 {{i}}
               </div>
               {% endfor %}
+<<<<<<< HEAD
               {% endif %}
             </span>
+=======
+            {% endif %}
+          </span>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
           </div>
 
           <div class="card-reveal">
@@ -54,16 +59,26 @@
             {% else %}
             <a class="btn" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
             {% endif %}
+<<<<<<< HEAD
             <a class="btn" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+=======
+             <a class="btn" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
           </div>
         </div>
       </div>
       {% endfor %}
       {% endif %}
+<<<<<<< HEAD
 
 
     </div>
+=======
+
+
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
   </div>
+</div>
 </div>
 
 

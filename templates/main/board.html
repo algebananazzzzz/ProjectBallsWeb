@@ -17,11 +17,16 @@
   <div class="row display-container container-small" style="padding-top:64px">
     <div class="col s12 m6 white-text">
       <h1>Actions</h1>
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 
       <div class="row">
         <div class="col s6">
           <a target="_blank" href="{% url 'download_board' board.pk %}">
+<<<<<<< HEAD
 
             <div class="card gradient-primary">
               <div class="card-content">
@@ -31,6 +36,17 @@
 
             </div>
           </a>
+=======
+
+          <div class="card gradient-primary">
+            <div class="card-content">
+              <h3>Localize</h3>
+              <h6>Download snippets</h6>
+            </div>
+
+          </div>
+        </a>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
         </div>
         <div class="col s6">
           <a href="{% url 'generate_thumbnail' board.pk %}">
@@ -130,8 +146,13 @@
                 {{i}}
               </div>
               {% endfor %}
+<<<<<<< HEAD
               {% endif %}
             </span>
+=======
+            {% endif %}
+          </span>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
           </div>
 
           <div class="card-reveal">
@@ -141,12 +162,21 @@
                 <a class="btn-large waves-effect waves-green btn-flat green round-0" href="{% url 'snippet_video' board.pk snippet.pk %}" style="width:100%">View {{snippet.Name}}</a>
               </div>
               <div class="col s4 m4 no-padding">
+<<<<<<< HEAD
                 <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
 
               </div>
 
               <div class="col s8 m8 no-padding">
                 <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}" style="width:100%">Download</a>
+=======
+                <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0"  href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
+
+              </div>
+
+              <div class="col s6 m8 no-padding">
+                <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}"  style="width:100%">Download</a>
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
               </div>
 
             </div>

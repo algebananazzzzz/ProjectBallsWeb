@@ -10,6 +10,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 
 def create_snippet(board, data):
     video_path = board.videoFile.path
+<<<<<<< HEAD
     snippet_path = settings.MEDIA_ROOT + '/users/snippets/'
 
     tag_list = data['tags'].strip('][').split(',')
@@ -20,6 +21,10 @@ def create_snippet(board, data):
         snippet_path += '-'
 
     snippet_path += uuid.uuid4().hex + '.mp4'
+=======
+    snippet_path = settings.MEDIA_ROOT + '/users/snippets/' + uuid.uuid4().hex + \
+        '.mp4'
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 
     with VideoFileClip(video_path) as video:
         new = video.subclip(
@@ -28,12 +33,17 @@ def create_snippet(board, data):
 
     with open(snippet_path, 'rb') as file_handler:
         snippet = SnippetModel.objects.create(
+<<<<<<< HEAD
             Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list)
+=======
+            Board=board, videoFile=File(file_handler), Name=data['name'], Tags=data['tags'].strip('][').split(', '))
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 
     os.remove(snippet_path)
 
     snippet.create_thumbnail()
 
+<<<<<<< HEAD
 
 def generate_dash_video(path):
 
@@ -45,6 +55,18 @@ def generate_dash_video(path):
     os.system(command)
 
 
+=======
+
+def generate_dash_video(path):
+
+    command = 'MP4Box -dash 10000 -frag 1000 -rap -single-segment {} '.format(
+        path)
+
+    os.chdir(settings.MEDIA_ROOT + '/users/videos')
+    os.system(command)
+
+
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
 def auto_delete_ondelete(instance):
     if instance.videoFile:
         if os.path.isfile(instance.videoFile.path):
@@ -53,7 +75,11 @@ def auto_delete_ondelete(instance):
     dash_path = instance.get_mpd_videofile_url()
 
     if dash_path:
+<<<<<<< HEAD
         dash_path = os.path.splitext(instance.videoFile.path)[0]
+=======
+        dash_path = os.path.splitext(board.videoFile.path)[0]
+>>>>>>> 453ccb05972faccbb9801652703c3c4b326096e6
         os.unlink(dash_path + '_dash.mpd')
         os.unlink(dash_path + '_dashinit.mp4')
 
