@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav role="navigation" id="topnav" class="transparent-bg z-depth-0 topnav-fixed canvas-wrapper">
+  <canvas class="canvas-basic"></canvas>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo left" style="padding-left:15px">ProjectBalls</a>
+    <ul class="right">
+      <li><a href="{% url 'configure' %}">Configure</a></li>
+
+      <li><a href="{% url 'logout' %}"><i class="material-icons right">logout</i>Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class=" bgimg ">
+  <div class="row display-container container-small" style="padding-top:64px">
+    <div class="col s12 m6 white-text">
+      <h1>Actions</h1>
+      <div class="row">
+        <div class="col s6">
+          <div class="card gradient-secondary">
+            <div class="card-content">
+              <h3>Boards</h3>
+              <h6>You have {{board_count}} boards</h6>
+            </div>
+
+          </div>
+        </div>
+
+        <a href="{% url 'configure' %}">
+          <div class="col s6">
+            <div class="card gradient-warning">
+              <div class="card-content">
+                <h3>Configure</h3>
+                <h6>Change controls? No problem!</h6>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col s12 m6 white-text">
+      <h1 class="white-text right">Clips</h1>
+      <div class="row">
+        <div class="col s12">
+          Tags:
+          <div class="chip">
+            Offense
+          </div>
+          <div class="chip">
+            Defense
+          </div>
+          <div class="chip">
+            Side line play
+          </div>
+        </div>
+        <div class="col s12">
+          <div class="card-panel center padding-8 gradient-primary">
+            <form method="post">
+              {% csrf_token %}
+              <h4 class="white-text">Filter by:
+              </h4>
+              <h6>Returns snippets that matches query</h6>
+              <div name="query-chips" id="query-chips" class="chips" style="white-text">
+              </div>
+              <input type="hidden" id="query" name="query" type="text">
+
+              <button type="submit" name="button" class="btn gradient-success" style="width:100%">Go!</button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="section-larger" id="home-content1">
+  <div class="container-small">
+    <h1 class="gradient-primary-text">Boards</h1>
+    <h4>Each board denotes a video you wanna edit</h4>
+    <div class="row">
+      {% load thumbnail %}
+      {% for board in board_list %}
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator bgimg" src="{% thumbnail board.thumbnail '1600x900' crop='center' as im %}{{ im.url }}{% endthumbnail %}">
+            <span class=" card-title activator white-text">{{board.Name}}</span>
+          </div>
+
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">{{board.Name}}<i class="material-icons right">close</i></span>
+            <p>{{board.Description}}</p>
+            <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0 " href="{% url 'board' board.pk %}" style="width:100%">View {{board.Name}}</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="col s12">
+        <a href="{% url 'board_config' %}">
+          <div class="card-panel center padding-8 canvas-wrapper">
+            <canvas class="canvas-basic" width="300" height="300"></canvas>
+            <h4 class="white-text">Add board
+            </h4>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<footer class="page-footer canvas-wrapper">
+  <canvas class="canvas-basic"></canvas>
+  <div class="cta-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col l8 s12">
+          <h5 class="white-text">Ariesse</h5>
+          <h6>Simplicity, clarity, versatility</h6>
+        </div>
+
+        <div class="col l4 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="https://github.com/algebananazzzzz" target="_blank">Github</a></li>
+            <li><a class="white-text" href="https://mail.google.com/mail/?view=cm&fs=1&to=danielp-devs@gmail.com" target="_blank">Email (No spams please)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Made by <a class="white-text text-lighten-3" href="https://github.com/algebananazzzzz" target="_blank">algebananazzzzz</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script type="text/javascript">
+  var tag_autocomplete_data = {{ tag_autocomplete_data | safe }}
+</script>
+<style media="screen">
+  .bgimg {
+    background-image: url('../media/images/field-bg.jpg')
+  }
+</style>
+
+
+
+{% load static %}
+<script src="{% static 'js/dashboard.js' %}" charset="utf-8"></script>
+
+{% endblock %}

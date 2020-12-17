@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<nav id="topnav" class="topnav-fixed">
+  <canvas class="canvas-basic opacity-off"></canvas>
+  <div class="nav-wrapper" style="padding-left:15px">
+    <div class="center">
+      <a href="{% url 'dashboard' %}" class="breadcrumb">Dashboard</a>
+      <a href="{% url 'board' board.pk %}" class="breadcrumb">Board</a>
+      <a class="breadcrumb">Video</a>
+
+    </div>
+
+  </div>
+</nav>
+
+<div class="topnav-offset">
+
+</div>
+
+<div class="section fullscreen">
+  <div class="container-small row">
+    <div class="col s12 l9">
+      <video id="video" class="video-js vjs-theme-sea vjs-16-9" controls preload="auto" width="100%" height="auto" poster="{{board.get_thumbnail_url}}" data-setup="{}">
+        <p class="vjs-no-js">
+          To view this video please enable JavaScript, and consider upgrading to a
+          web browser that
+          <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+      </video>
+    </div>
+
+    <div class="col s12 l3">
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" id="hidden_input" name="data" value="%5B%5D">
+        <ul id="list" class="collapsible popout">
+          <li class="active" id="new_form">
+            <div id="header" class="collapsible-header"><i class="material-icons">add</i>Add snippet</div>
+
+            <div class="collapsible-body"><span>Parameters for snippet, submit form to create!!</span>
+
+              <div class="input-field">
+                <input class="validate require-count" id="name" name="name" type="text" required data-length="50">
+                <label for="name">Name</label>
+              </div>
+
+              <div id="new_tag_chips" style="white-text">
+              </div>
+
+              <div class="row">
+                <div class="col s6">
+                  <div class="input-field">
+                    <input class="validate" required placeholder="" id="start_time" name="start_time" type="number" step="0.01" min="0" required>
+                    <label for="start_time">Start time</label>
+
+                  </div>
+                </div>
+                <div class="col s6">
+                  <div class="input-field">
+                    <input class="validate" required placeholder="" id="end_time" name="end_time" type="number" step="0.01" min="0" required>
+
+                    <label for="end_time">End time</label>
+                  </div>
+                </div>
+              </div>
+
+
+              <input type="hidden" id="new_tags" name="tags" value="" type="text">
+
+              <a class="btn gradient-secondary" onclick="comfirm_snippet(this)" style="width:100%">Ok!</a>
+
+            </div>
+          </li>
+        </ul>
+        <button type="submit" onclick="remove_new()" class="btn gradient-success" style="width:100%">I'm done!</button>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+
+<footer class="page-footer canvas-wrapper">
+  <canvas class="canvas-basic"></canvas>
+  <div class="cta-wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col l8 s12">
+          <h5 class="white-text">Ariesse</h5>
+          <h6>Simplicity, clarity, versatility</h6>
+        </div>
+
+        <div class="col l4 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="https://github.com/algebananazzzzz" target="_blank">Github</a></li>
+            <li><a class="white-text" href="https://mail.google.com/mail/?view=cm&fs=1&to=danielp-devs@gmail.com" target="_blank">Email (No spams please)</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        Made by <a class="white-text text-lighten-3" href="https://github.com/algebananazzzzz" target="_blank">algebananazzzzz</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% load static %}
+<script src="{% static 'js/video.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dashjs/3.2.0/dash.all.min.js" integrity="sha512-wFaKU7BcXbvVVGi0vDUKv4GXc9Hrp4RjGZorG8KlpRurhpvgCXiLhcafCj3y/gKY5CKAuyu00b+BvJ+vyRD0Pg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-dash/4.0.0/videojs-dash.min.js" integrity="sha512-aw/opNs7UL6pySX/cObxEb4SE6cv5Sui8FiLdy/8LHq4/+t1U0xTNUD72UoPL3poRUJmXnaS7FtMHX3qKoHkew==" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+  var tag_autocomplete_data = {{board.primaryTags|safe}}
+  var start_recording_key = {{start_recording_key}}
+  var end_recording_key = {{end_recording_key}}
+  var cancel_recording_key = {{cancel_recording_key}}
+
+  var player = videojs('video');
+
+  player.ready(function() {
+    if ('{{video_path}}' !== 'False') {
+      player.src({
+        src: '{{video_path|safe}}',
+        type: 'application/dash+xml'
+      });
+
+    } else {
+      player.src({
+        src: '{{board.videoFile.url}}',
+        type: 'video/mp4'
+      });
+
+    }
+
+  });
+
+</script>
+
+<script src="{% static 'js/myvideo.js' %}" charset="utf-8"></script>
+
+
+{% endblock %}

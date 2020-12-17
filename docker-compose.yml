@@ -1,0 +1,36 @@
+version: "3"
+   
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=projectballs
+      - POSTGRES_USER=projectballs
+      - POSTGRES_PASSWORD=projectballs
+  web:
+    build: .
+    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - rqworker
+      - rqworker_high
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  rqworker:
+    build: .
+    volumes:
+      - .:/code
+    command: python project_balls/manage.py rqworker
+  rqworker_high:
+    build: .
+    volumes:
+      - .:/code
+    command: python project_balls/manage.py rqworker high
