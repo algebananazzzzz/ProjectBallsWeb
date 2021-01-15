@@ -15,7 +15,6 @@
     </div>
   </div>
 </nav>
-
 <div id="delete-modal" class="modal">
   <div class="modal-content">
     <h4>Are you sure?</h4>
@@ -42,7 +41,7 @@
 
     <div class="row">
       {% if context == 'Board' %}
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" onsubmit="load(this)">
         {% csrf_token %}
 
         <h5 class="section">General</h5>

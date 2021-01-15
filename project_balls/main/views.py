@@ -79,7 +79,7 @@ def login(request):
                 auth.login(request, user)
                 # messages.info(request, f"Hello, {username}")
                 messages.add_message(
-                    request, messages.INFO, 'Welcome back!! :)')
+                    request, messages.INFO, 'Welcome back, {}!! :)'.format(user.username))
 
                 return redirect("/dashboard")
         else:
@@ -112,6 +112,9 @@ def signup(request):
             return redirect('/dashboard')
 
         else:
+            messages.add_message(
+                request, messages.WARNING, 'Username already exists. Login instead?')
+
             error_message = "Username already exists. Login instead?"
 
     return render(request=request, template_name="main/signup.html", context={'error_message': error_message})

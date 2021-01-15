@@ -1,3 +1,25 @@
+
+function load(element) {
+  element.submit();
+  document.querySelectorAll('style,link[rel="stylesheet"]').forEach(item => item.remove())
+  document.getElementsByTagName("head")[0].innerHTML = '<link rel="stylesheet" type="text/css" href="./static/css/loading.css">'
+  document.body.innerHTML = '<div id="container">\
+    <div class="divider" aria-hidden="true"></div>\
+    <p class="loading-text" aria-label="Loading">\
+      <span class="letter" aria-hidden="true">L</span>\
+      <span class="letter" aria-hidden="true">o</span>\
+      <span class="letter" aria-hidden="true">a</span>\
+      <span class="letter" aria-hidden="true">d</span>\
+      <span class="letter" aria-hidden="true">i</span>\
+      <span class="letter" aria-hidden="true">n</span>\
+      <span class="letter" aria-hidden="true">g</span>\
+    </p>\
+    <p>Downloading your video to the server... bear with me a while</p>\
+  </div>';
+}
+
+//retain elements
+
 $(document).ready(function() {
   $('.require-count').characterCounter();
 });
