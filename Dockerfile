@@ -5,5 +5,5 @@ COPY requirements.txt /code/
 RUN apt-get update
 RUN apt-get install -y ffmpeg
 RUN apt-get install -y gpac
-RUN pip install -r requirements.txt
+RUN pip install -r project_balls/requirements.txt
 COPY . /code/
