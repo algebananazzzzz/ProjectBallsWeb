@@ -64,8 +64,8 @@ function comfirm_snippet(element) {
 
   var form_name = document.getElementById("name").value
   var form_new_tags = document.getElementById("new_tags").value
-  var form_start_time = document.getElementById("start_time").value
-  var form_end_time = document.getElementById("end_time").value
+  var form_start_time = document.getElementById("hidden_start_time").value
+  var form_end_time = document.getElementById("hidden_end_time").value
 
 
   if (validateForm(form_name, form_start_time, form_end_time)) {
@@ -88,7 +88,7 @@ function comfirm_snippet(element) {
 
   hidden_input.value = encodeURIComponent(JSON.stringify(input_data))
 
-  var inner_html = '<div class="collapsible-header"><i class="material-icons" onclick="remove(this)">remove</i>' + form_name + '</div><div class="collapsible-body"><p>Name: ' + form_name + '</p><p>Tags: ' + form_new_tags + '</p><p>Start time: ' + form_start_time + '</p><p>End time: ' + form_end_time + '</p></div>'
+  var inner_html = '<div class="collapsible-header"><i class="material-icons" onclick="remove(this)">remove</i>' + form_name + '</div><div class="collapsible-body"><p>Name: ' + form_name + '</p><p>Tags: ' + form_new_tags + '</p><p>Snippet count: ' + JSON.parse(decodeURIComponent(form_end_time)).length + '</p></div>'
 
 
 
@@ -101,8 +101,10 @@ function comfirm_snippet(element) {
 
   document.getElementById("name").value = ""
   document.getElementById("new_tags").value = ""
-  document.getElementById("start_time").value = ""
-  document.getElementById("end_time").value = ""
+  document.getElementById("hidden_start_time").value = "%5B%5D"
+  document.getElementById("hidden_end_time").value = "%5B%5D"
+
+  $("#table tbody tr:not(:last)").remove()
 }
 
 
@@ -175,7 +177,18 @@ $('#video').keyup(function(event) {
   } else if (keynum == end_recording_key) {
 
     if (start_time) {
-      end_input.value = player.currentTime().toFixed(2)
+      var start_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_start_time").value))
+      var end_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_end_time").value))
+
+      start_times.push(parseFloat(start_time))
+      var end_time = player.currentTime().toFixed(2)
+      end_times.push(parseFloat(end_time))
+      $("#table tbody").prepend("<tr><td>" + start_time + "</td><td>" + end_time + "</td></tr>");
+
+      document.getElementById("hidden_end_time").value = encodeURIComponent(JSON.stringify(end_times))
+      document.getElementById("hidden_start_time").value = encodeURIComponent(JSON.stringify(start_times))
+      start_input.value = ""
+      end_input.value = ""
     } else {
       start_input.value = ""
       end_input.value = ""

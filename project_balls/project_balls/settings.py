@@ -68,22 +68,6 @@ RQ_QUEUES = {
     },
 }
 
-VIDEO_ENCODING_FORMATS = {
-    'FFmpeg': [
-        {
-            'name': 'webm_sd',
-            'extension': 'webm',
-            'params': [
-                '-b:v', '1000k', '-maxrate', '1000k', '-bufsize', '2000k',
-                '-codec:v', 'libvpx', '-r', '30',
-                '-vf', 'scale=-1:480', '-qmin', '10', '-qmax', '42',
-                '-codec:a', 'libvorbis', '-b:a', '128k', '-f', 'webm',
-            ],
-        },
-    ]
-}
-
-STREAM_FORMAT = 'webm_sd'
 
 # LOGGING = {
 #     'version': 1,
@@ -156,27 +140,27 @@ WSGI_APPLICATION = 'project_balls.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'projectballs',
-#         'USER': 'projectballs',
-#         'PASSWORD': 'projectballs',
-#         'HOST': 'db',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'projectballs',
-        'USER': 'danielp',
-        'PASSWORD': 'danie18312',
-        'HOST': 'localhost',
+        'USER': 'projectballs',
+        'PASSWORD': 'projectballs',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'projectballs',
+#         'USER': 'daniel',
+#         'PASSWORD': 'danie18312',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 AUTH_USER_MODEL = 'main.User'
 

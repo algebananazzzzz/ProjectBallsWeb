@@ -211,8 +211,9 @@ def video(request, boardPk):
     board = BoardModel.objects.get(pk=boardPk)
 
     if request.method == "POST":
-
+        print(unqoutunquote(request.POST['data']))
         data = json.loads(unquote(unquote(request.POST['data'])))
+
         for i in data:
             django_rq.enqueue(create_snippet, board, i)
             messages.add_message(request, messages.INFO,

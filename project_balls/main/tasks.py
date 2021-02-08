@@ -18,25 +18,27 @@ def create_snippet(board, data):
         snippet_path += i
         snippet_path += '-'
 
-    snippet_path += uuid.uuid4().hex + '.mp4'
+    start_time = data['start_time'].strip('][').split(',')
+    end_time = data['end_time'].strip('][').split(',')
 
-    with VideoFileClip(video_path) as video:
-        new = video.subclip(
-            float(data['start_time']), float(data['end_time']))
-        new.write_videofile(snippet_path, audio_codec='aac')
+    for i in range(len(start_time)):
+        new_snippet_path = snippet_path + uuid.uuid4().hex + '.mp4'
 
-    with open(snippet_path, 'rb') as file_handler:
-        snippet = SnippetModel.objects.create(Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list)
+        with VideoFileClip(video_path) as video:
+            new = video.subclip(
+                float(start_time[i]), float(end_time[i]))
+            new.write_videofile(new_snippet_path, audio_codec='aac')
 
-    os.remove(snippet_path)
+        with open(new_snippet_path, 'rb') as file_handler:
+            snippet = SnippetModel.objects.create(Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list)
 
-    snippet.create_thumbnail()
+        os.remove(new_snippet_path)
 
+        snippet.create_thumbnail()
 
 def generate_dash_video(path):
 
-    command = 'MP4Box -dash 1500 -frag 3000 -rap -single-segment {} '.format(
-        path)
+    command = 'MP4Box -dash 4000 -frag 4000 -rap -bs-switching no -profile live ' + path +'#video ' + path +  '#audio'
 
     os.chdir(settings.MEDIA_ROOT + '/users/videos')
 
@@ -51,7 +53,6 @@ def auto_delete_ondelete(instance):
 
     if dash_path:
         dash_path = os.path.splitext(instance.videoFile.path)[0]
-        dash_path = os.path.splitext(board.videoFile.path)[0]
         os.unlink(dash_path + '_dash.mpd')
         os.unlink(dash_path + '_dashinit.mp4')
 
