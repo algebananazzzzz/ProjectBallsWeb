@@ -6,21 +6,6 @@ services:
     image: postgres
     env_file:
       - .env
-  web:
-    restart: always
-    build: .
-    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && project_balls/manage.py thumbnail cleanup && project_balls/manage.py thumbnail clear && python project_balls/manage.py runserver 0.0.0.0:8000"
-    volumes:
-      - .:/code
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-      - redis
-      - rqworker
-      - rqworker_high
-    env_file:
-      - .env
   redis:
     restart: always
     image: redis:latest
@@ -36,3 +21,19 @@ services:
     volumes:
       - .:/code
     command: python project_balls/manage.py rqworker high
+  web:
+    restart: always
+    build: .
+    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+      - rqworker
+      - rqworker_high
+    env_file:
+      - .env
+
