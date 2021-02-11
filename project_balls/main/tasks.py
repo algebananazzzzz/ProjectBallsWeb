@@ -1,4 +1,5 @@
 import os
+import glob
 import uuid
 from django.conf import settings
 from pathlib import Path
@@ -53,11 +54,13 @@ def auto_delete_ondelete(instance):
 
     if dash_path:
         dash_path = os.path.splitext(instance.videoFile.path)[0]
-        os.unlink(dash_path + '_dash.mpd')
-        os.unlink(dash_path + '_dashinit.mp4')
+        file_list = glob.glob(dash_path + '*', recursive=True)
+
+        for f in file_list:
+            os.remove(f)
 
     old_path = instance.thumbnail.path
-    base_url = '/images/default-thumbnail.jpg'
+    base_url = settings.MEDIA_ROOT + '/images/default-thumbnail.jpg'
 
     try:
         if old_path != base_url:

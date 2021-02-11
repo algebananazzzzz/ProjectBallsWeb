@@ -2,14 +2,14 @@ version: "3"
    
 services:
   db:
+    restart: always
     image: postgres
-    environment:
-      - POSTGRES_DB=projectballs
-      - POSTGRES_USER=projectballs
-      - POSTGRES_PASSWORD=projectballs
+    env_file:
+      - .env
   web:
+    restart: always
     build: .
-    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && project_balls/manage.py thumbnail cleanup && project_balls/manage.py thumbnail clear && python project_balls/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
@@ -19,15 +19,19 @@ services:
       - redis
       - rqworker
       - rqworker_high
+    env_file:
+      - .env
   redis:
     restart: always
     image: redis:latest
   rqworker:
+    restart: always
     build: .
     volumes:
       - .:/code
     command: python project_balls/manage.py rqworker
   rqworker_high:
+    restart: always
     build: .
     volumes:
       - .:/code

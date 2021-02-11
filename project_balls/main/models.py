@@ -157,8 +157,10 @@ class SnippetModel(models.Model):
 
         encoding_backend = get_backend()
 
+        at_time = new_video.duration / 2
+
         thumbnail_path = encoding_backend.get_thumbnail(
-            new_video.path)
+            new_video.path, at_time=at_time)
         filename = Path(new_video.name).stem
 
         try:

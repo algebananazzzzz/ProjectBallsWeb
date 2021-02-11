@@ -68,38 +68,6 @@ RQ_QUEUES = {
     },
 }
 
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'simple': {
-#             'format': '%(asctime)s %(levelname)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple'
-#         },
-#     },
-#
-#     'loggers': {
-#         'django.request': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#         'rq_scheduler': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
-
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -143,24 +111,13 @@ WSGI_APPLICATION = 'project_balls.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'projectballs',
-        'USER': 'projectballs',
-        'PASSWORD': 'projectballs',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'projectballs',
-#         'USER': 'daniel',
-#         'PASSWORD': 'danie18312',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
 
 AUTH_USER_MODEL = 'main.User'
 

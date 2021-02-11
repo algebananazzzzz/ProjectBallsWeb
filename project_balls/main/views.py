@@ -6,7 +6,7 @@ import zipfile
 import io
 from pathlib import Path
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib import auth
 from urllib.parse import unquote
@@ -18,7 +18,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def download(request, snippetPk):
-    object = SnippetModel.objects.get(pk=snippetPk)
+    object = get_object_or_404(SnippetModel, pk=snippetPk)
+    if object.Board.User != request.user:
+        return Http404
+
     filename = object.videoFile.name.split('/')[-1]
     response = HttpResponse(object.videoFile, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
@@ -27,7 +30,7 @@ def download(request, snippetPk):
 
 @login_required
 def download_board(request, boardPk):
-    board = BoardModel.objects.get(pk=boardPk)
+    board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
     filenames = list()
 
     for i in board.snippets():
@@ -72,7 +75,6 @@ def login(request):
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            print(username, password)
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(request, user)
@@ -137,7 +139,7 @@ def dashboard(request):
 
 @login_required
 def board(request, boardPk):
-    board = BoardModel.objects.get(pk=boardPk)
+    board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
 
     if request.method == "POST":
         query = request.POST['query'].strip('][').split(', ')
@@ -156,12 +158,12 @@ def board_config(request, boardPk=None):
 
     if request.method == "POST":
         if 'delete' in request.POST:
-            instance = BoardModel.objects.get(pk=boardPk)
+            instance = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
             instance.delete()
             return redirect('dashboard')
         else:
             if boardPk:
-                instance = BoardModel.objects.get(pk=boardPk)
+                instance = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
                 form = BoardModelForm(
                     request.POST, request.FILES, instance=instance)
             else:
@@ -175,7 +177,7 @@ def board_config(request, boardPk=None):
                 boardPk = new_instance.pk
 
                 messages.add_message(
-                    request, messages.INFO, 'It may take a while to configure... (converting your file from mp4 to mpd for DASH streaming)')
+                    request, messages.INFO, 'Configuring your board (converting your file from mp4 to mpd for DASH streaming)...')
 
                 return redirect('board', boardPk)
 
@@ -192,23 +194,30 @@ def board_config(request, boardPk=None):
 
 @login_required
 def generate_thumbnail(request, boardPk):
-    BoardModel.objects.get(pk=boardPk).create_thumbnail()
-    messages.add_message(request, messages.WARNING,
-                         "I'm working really hard here, gimme a moment :o")
+    get_object_or_404(BoardModel, User=request.user, pk=boardPk).create_thumbnail()
+
+    messages.add_message(request, messages.INFO,
+                         "Generated thumbnail :)")
 
     return redirect('board', boardPk)
 
 
 @login_required
 def delete_snippet(request, boardPk, snippetPk):
-    SnippetModel.objects.get(pk=snippetPk).delete()
+    snippet = get_object_or_404(SnippetModel, pk=snippetPk)
+
+    if snippet.Board.User != request.user:
+        return Http404
+    else:
+        snippet.delete()
+
     return redirect('board', boardPk)
 
 
 @login_required
 def video(request, boardPk):
     user = request.user
-    board = BoardModel.objects.get(pk=boardPk)
+    board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
 
     if request.method == "POST":
 
@@ -230,7 +239,9 @@ def video(request, boardPk):
 
 @login_required
 def snippet_video(request, boardPk, snippetPk):
-    snippet = SnippetModel.objects.get(pk=snippetPk)
+    snippet = get_object_or_404(SnippetModel, pk=snippetPk)
+    if snippet.Board.User != request.user:
+        return Http404
 
     video_path = '/media/users/snippets/' + \
         Path(snippet.videoFile.name).stem + '.mp4'
