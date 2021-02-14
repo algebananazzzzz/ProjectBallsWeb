@@ -6,6 +6,7 @@ urlpatterns = [
     path('login', views.login, name='login'),
     path('logout', views.logout, name='logout'),
     path('signup', views.signup, name='signup'),
+    path('change_password', views.change_password, name='change_password'),
     path('dashboard', views.dashboard, name='dashboard'),
     path('board/<int:boardPk>', views.board, name='board'),
     path('board-config', views.board_config, name='board_config'),

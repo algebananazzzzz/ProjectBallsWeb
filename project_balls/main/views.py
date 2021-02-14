@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib import auth
 from urllib.parse import unquote
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .forms import MyUserCreationForm, BoardModelForm, configureUserForm
 from .models import User, BoardModel, SnippetModel
 from .tasks import create_snippet

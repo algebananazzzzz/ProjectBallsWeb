@@ -1,7 +1,7 @@
 /* gradients */
 .gradient-primary {
   color: #ffffff !important;
-  background: linear-gradient(30deg,  #8a2387, #e94057, #f27121);
+  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
 }
 
 .gradient-primary-text {
@@ -137,5 +137,3 @@
 .canvas-wrapper.page-footer {
   background-color: transparent !important;
 }
-
-/*# sourceMappingURL=aries.css.map */
