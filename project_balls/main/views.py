@@ -10,11 +10,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib import auth
 from urllib.parse import unquote
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .forms import signupForm, BoardModelForm, configureUserForm
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import MyUserCreationForm, BoardModelForm, configureUserForm
 from .models import User, BoardModel, SnippetModel
 from .tasks import create_snippet
 from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def download(request, snippetPk):
@@ -27,6 +28,7 @@ def download(request, snippetPk):
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
+
 
 @login_required
 def download_board(request, boardPk):
@@ -64,11 +66,14 @@ def download_board(request, boardPk):
 
     return resp
 
+
 def home(request):
     return render(request=request, template_name="main/home.html")
 
+
 def login(request):
-    form_message = None
+    error_message = None
+
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
 
@@ -84,9 +89,47 @@ def login(request):
 
                 return redirect("/dashboard")
         else:
-            form_message = "Invalid username or password."
+            messages.error(request, 'Please correct the error below.')
+
+            error_messages = form.error_messages
+
+            if 'invalid_login' in error_messages.keys():
+                error_message = 'Please enter a correct username and password. Note that both fields may be case-sensitive.'
+
     form = AuthenticationForm()
-    return render(request=request, template_name="main/login.html", context={"form_message": form_message})
+
+    return render(request=request, template_name="main/login.html", context={"error_message": error_message})
+
+
+def signup(request):
+    error_message = None
+
+    if request.method == 'POST':
+
+        form = MyUserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = auth.authenticate(username=username, password=raw_password)
+            auth.login(request, user)
+            messages.add_message(
+                request, messages.INFO, 'Welcome here!! :)')
+
+            return redirect('/dashboard')
+
+        else:
+            messages.error(request, 'Please correct the error below.')
+
+            username = request.POST['username']
+
+            if User.objects.filter(username=username).exists():
+                error_message = "Username already exists. Login instead?"
+            else:
+                error_message = "Password either does not match, or is too weak. Does your password contain at least 8 characters, and not entirely numeric."
+
+    return render(request=request, template_name="main/signup.html", context={'error_message': error_message})
 
 
 @login_required
@@ -96,30 +139,30 @@ def logout(request):
     return redirect("/")
 
 
-def signup(request):
-    error_message = None
+@login_required
+def change_password(request):
     if request.method == 'POST':
-
-        form = signupForm(request.POST)
-
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            form.save()
-            user = auth.authenticate(username=username, password=raw_password)
-            auth.login(request, user)
-            messages.add_message(
-                request, messages.INFO, 'Welcome here!! :)')
-
-            return redirect('/dashboard')
-
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(
+                request, 'Your password was successfully updated!')
+            return redirect('change_password')
         else:
-            messages.add_message(
-                request, messages.WARNING, 'Username already exists. Login instead?')
+            messages.error(request, 'Please correct the error below.')
+            error_messages = form.error_messages
+            error_message = ''
 
-            error_message = "Username already exists. Login instead?"
+            for i in error_messages.values():
+                error_message = error_message + str(i) + ' '
 
-    return render(request=request, template_name="main/signup.html", context={'error_message': error_message})
+    else:
+        form = PasswordChangeForm(request.user)
+        error_message = None
+    return render(request, 'main/change_password.html', {
+        'form': form, 'error_message': error_message
+    })
 
 
 @login_required
@@ -158,12 +201,14 @@ def board_config(request, boardPk=None):
 
     if request.method == "POST":
         if 'delete' in request.POST:
-            instance = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
+            instance = get_object_or_404(
+                BoardModel, User=request.user, pk=boardPk)
             instance.delete()
             return redirect('dashboard')
         else:
             if boardPk:
-                instance = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
+                instance = get_object_or_404(
+                    BoardModel, User=request.user, pk=boardPk)
                 form = BoardModelForm(
                     request.POST, request.FILES, instance=instance)
             else:
@@ -194,7 +239,8 @@ def board_config(request, boardPk=None):
 
 @login_required
 def generate_thumbnail(request, boardPk):
-    get_object_or_404(BoardModel, User=request.user, pk=boardPk).create_thumbnail()
+    get_object_or_404(BoardModel, User=request.user,
+                      pk=boardPk).create_thumbnail()
 
     messages.add_message(request, messages.INFO,
                          "Generated thumbnail :)")

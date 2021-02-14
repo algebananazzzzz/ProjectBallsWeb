@@ -112,26 +112,12 @@
       {% else %}
       <form method="post">
         {% csrf_token %}
-        <h5 class="section">General</h5>
-        <div class="input-field ">
-          {{form.username}}
-          <label for="{{ form.username.id_for_label }}">Username</label>
-          {% if form.Username.errors %}
-          <span class="helper-text"> {{ form.Username.errors }}
-          </span>
-          {% endif %}
-        </div>
-        <!-- <select class="browser-default col-md-3">
-          <option value="" disabled selected>Choose your option</option>
-          <option value="1">Use system select inputs</option>
-          <option value="2">Manually input tags</option>
-        </select> -->
 
-        <h5 class="section" >Controls</h5 >
+        <h5 class="section">Controls</h5>
         <p>Uses default keycodes (on chrome)</p>
 
-        <div class="input-field" >
-          <input value="{{ form.start_recording_key.value|stringformat:'s' }}" id="{{ form.start_recording_key.id_for_label }}" name="{{ form.start_recording_key.name }}" type="number" readonly  class="myKeyPress" >
+        <div class="input-field">
+          <input value="{{ form.start_recording_key.value|stringformat:'s' }}" id="{{ form.start_recording_key.id_for_label }}" name="{{ form.start_recording_key.name }}" type="number" readonly class="myKeyPress">
           <label class="active" for="first_name2">Start recording</label>
         </div>
         <div class="input-field">

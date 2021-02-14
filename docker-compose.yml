@@ -1,5 +1,5 @@
 version: "3"
-   
+
 services:
   db:
     restart: always
@@ -15,14 +15,17 @@ services:
     volumes:
       - .:/code
     command: python project_balls/manage.py rqworker
+    env_file:
+      - .env
   rqworker_high:
     restart: always
     build: .
     volumes:
       - .:/code
     command: python project_balls/manage.py rqworker high
+    env_file:
+      - .env
   web:
-    restart: always
     build: .
     command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -36,4 +39,3 @@ services:
       - rqworker_high
     env_file:
       - .env
-

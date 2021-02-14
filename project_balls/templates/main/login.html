@@ -25,8 +25,8 @@
           <i class="material-icons prefix white-text">lock</i>
           <input id="password" name="password" type="password" class="validate white-text">
           <label for="password" class="white-text">PASSWORD</label>
-          {% if form_message %}
-          <span class="helper-text white-text">{{form_message}}</span>
+          {% if error_message %}
+          <span class="helper-text white-text">{{error_message}}</span>
           {% endif %}
         </div>
         <button class="btn-large gradient-success hover-0 z-depth-1 col s12 " type="submit">

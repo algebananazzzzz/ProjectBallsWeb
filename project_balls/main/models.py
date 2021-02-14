@@ -16,7 +16,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 class User(AbstractUser):
     allTags = ArrayField(models.CharField(max_length=30), default=list)
     start_recording_key = models.IntegerField(default=83)
-    start_recording_key = models.IntegerField(default=115)
     end_recording_key = models.IntegerField(default=32)
     cancel_recording_key = models.IntegerField(default=67)
 
