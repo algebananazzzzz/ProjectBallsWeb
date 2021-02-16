@@ -49,12 +49,25 @@
 
           <div class="card-reveal">
             <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
+            <div class="row">
             {% if boardPk %}
-            <a class="btn" href="{% url 'snippet_video' boardPk snippet.pk %}">View {{snippet.Name}}</a>
+            <div class="col s12 no-padding">
+              <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' boardPk snippet.pk %}">View {{snippet.Name}}</a>
+            </div>
+            <div class="col s4 m4 no-padding">
+              <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' boardPk snippet.pk %}" style="width:100%">Delete</a>
+            </div>
             {% else %}
-            <a class="btn" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
+            <div class="col s12 no-padding">
+              <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
+            </div>
+            <div class="col s4 m4 no-padding">
+              <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' snippet.Board.pk snippet.pk %}" style="width:100%">Delete</a>
+            </div>
             {% endif %}
-            <a class="btn" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+            <div class="col s6 m8 no-padding">
+              <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" style="width:100%" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+            </div>
           </div>
         </div>
       </div>
