@@ -27,5 +27,10 @@ Then change port number of 8000 to your custom port
 docker-compose build
 docker-compose up
 ```
+Or:
+1. If you're familiar with docker, just pull the latest docker image from dockerhub and build it
+```
+https://hub.docker.com/r/dzqx/projectballsweb
+```
 
 You're ready to host/do whatever shit you want now
