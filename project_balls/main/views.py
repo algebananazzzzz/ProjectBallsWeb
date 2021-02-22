@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib import auth
-from urllib.parse import unquote
+from urllib.parse import quote, unquote
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .forms import MyUserCreationForm, BoardModelForm, configureUserForm
 from .models import User, BoardModel, SnippetModel
@@ -29,6 +29,48 @@ def download(request, snippetPk):
 
     return response
 
+@login_required
+def download_query(request, query, boardPk=None):
+
+    query = unquote(query).strip('][').split(', ')
+    query = [ x.strip("'") for x in query ]
+    
+    if boardPk:
+        snippets = SnippetModel.objects.filter(Board=BoardModel.objects.get(pk=boardPk), Tags__contains=query)
+    else:
+        snippets = SnippetModel.objects.filter(Tags__contains=query)
+    filenames = list()
+
+    for i in snippets:
+        filenames.append(i.videoFile.path)
+
+    zip_subdir = str(query)
+    zip_filename = "%s.zip" % zip_subdir
+
+    # Open BytesIO to grab in-memory ZIP contents
+    s = io.BytesIO()
+
+    # The zip compressor
+    zf = zipfile.ZipFile(s, "w")
+
+    for fpath in filenames:
+        # Calculate path for file in zip
+        fdir, fname = os.path.split(fpath)
+        zip_path = os.path.join(zip_subdir, fname)
+
+        # Add file, at correct path
+        zf.write(fpath, zip_path, compress_type=zipfile.ZIP_DEFLATED)
+
+    # Must close zip for all contents to be written
+    zf.close()
+
+    # Grab ZIP file from in-memory, make response with correct MIME-type
+    resp = HttpResponse(
+        s.getvalue(), content_type="application/x-zip-compressed")
+    # ..and correct content-disposition
+    resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+    return resp
 
 @login_required
 def download_board(request, boardPk):
@@ -190,8 +232,8 @@ def board(request, boardPk):
             Board=board, Tags__contains=query)
         messages.add_message(request, messages.SUCCESS,
                              'Query successful!! :)')
-
-        return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk, 'snippets': snippets})
+        query_slug = quote(str(query))
+        return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk, 'snippets': snippets, 'query_slug': query_slug, 'boardPk': boardPk})
 
     return render(request=request, template_name="main/board.html", context={'board': board, 'snippets': board.snippets()})
 
