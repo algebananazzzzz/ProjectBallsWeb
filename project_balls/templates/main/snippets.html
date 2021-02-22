@@ -16,7 +16,6 @@
   </div>
 </nav>
 
-
 <div class="section-larger fullscreen">
   <div class="container-small">
     <h1 class="gradient-primary-text homepage-name">Snippets</h1>
@@ -50,33 +49,34 @@
           <div class="card-reveal">
             <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
             <div class="row">
-            {% if boardPk %}
-            <div class="col s12 no-padding">
-              <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' boardPk snippet.pk %}">View {{snippet.Name}}</a>
-            </div>
-            <div class="col s4 m4 no-padding">
-              <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' boardPk snippet.pk %}" style="width:100%">Delete</a>
-            </div>
-            {% else %}
-            <div class="col s12 no-padding">
-              <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
-            </div>
-            <div class="col s4 m4 no-padding">
-              <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' snippet.Board.pk snippet.pk %}" style="width:100%">Delete</a>
-            </div>
-            {% endif %}
-            <div class="col s6 m8 no-padding">
-              <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" style="width:100%" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+              {% if boardPk %}
+              <div class="col s12 no-padding">
+                <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' boardPk snippet.pk %}">View {{snippet.Name}}</a>
+              </div>
+              <div class="col s4 m4 no-padding">
+                <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' boardPk snippet.pk %}" style="width:100%">Delete</a>
+              </div>
+              {% else %}
+              <div class="col s12 no-padding">
+                <a class="btn-large waves-effect waves-green btn-flat green lighten-2 round-0" style="width:100%" href="{% url 'snippet_video' snippet.Board.pk snippet.pk %}">View {{snippet.Name}}</a>
+              </div>
+              <div class="col s4 m4 no-padding">
+                <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' snippet.Board.pk snippet.pk %}" style="width:100%">Delete</a>
+              </div>
+              {% endif %}
+              <div class="col s6 m8 no-padding">
+                <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" style="width:100%" target="_blank" href="{% url 'download' snippet.pk %}">Download</a>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
       {% endfor %}
       {% endif %}
     </div>
   </div>
 </div>
-
 
 <footer class="page-footer canvas-wrapper">
   <canvas class="canvas-basic"></canvas>
@@ -106,6 +106,27 @@
 </footer>
 
 {% load static %}
-<script src="{% static 'js/dashboard.js' %}" charset="utf-8"></script>
-
+<script type="text/javascript">
+  $('.canvas-basic').each(function() {
+    new Granim({
+      element: this,
+      direction: 'left-right',
+      states: {
+        "default-state": {
+          gradients: [
+            ['#b71c1c', '#880e4f'],
+            ['#4a148c', '#311b92'],
+            ['#1a237e', '#0d47a1'],
+            ['#01579b', '#006064'],
+            ['#004d40', '#1b5e20'],
+            ['#33691e', '#827717'],
+            ['#f57f17', '#ff6f00'],
+            ['#e65100', '#bf360c'],
+          ],
+          transitionSpeed: 5000
+        }
+      }
+    });
+  });
+</script>
 {% endblock %}

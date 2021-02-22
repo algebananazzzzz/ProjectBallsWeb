@@ -1,77 +1,77 @@
 /* gradients */
 .gradient-primary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+  background: linear-gradient(30deg, #b71c1c, #880e4f, #4a148c);
 }
 
 .gradient-primary-text {
-  background: linear-gradient(30deg, #8a2387, #e94057, #f27121);
+  background: linear-gradient(30deg, #b71c1c, #880e4f, #4a148c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-secondary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #8e2de2, #4a00e0);
+  background: linear-gradient(30deg, #4a148c, #311b92, #01579b);
 }
 
 .gradient-secondary-text {
-  background: linear-gradient(30deg, #8e2de2, #4a00e0);
+  background: linear-gradient(30deg, #4a148c, #311b92, #01579b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-tertiary {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #56ab2f, #a8e063);
+  background: linear-gradient(30deg, #0d47a1, #006064, #1b5e20);
 }
 
 .gradient-tertiary-text {
-  background: linear-gradient(30deg, #56ab2f, #a8e063);
+  background: linear-gradient(30deg, #0d47a1, #006064, #1b5e20);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-success {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #348f50, #56b4d3);
+  background: linear-gradient(30deg, #33691e, #1b5e20, #004d40);
 }
 
 .gradient-success-text {
-  background: linear-gradient(30deg, #348f50, #56b4d3);
+  background: linear-gradient(30deg, #33691e, #1b5e20, #004d40);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-info {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #363795, #005c97);
+  background: linear-gradient(30deg, #0d47a1, #1a237e);
 }
 
 .gradient-info-text {
-  background: linear-gradient(30deg, #363795, #005c97);
+  background: linear-gradient(30deg, #0d47a1, #1a237e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-warning {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #f12711, #f5af19);
+  background: linear-gradient(30deg, #bf360c, #ff6f00);
 }
 
 .gradient-warning-text {
-  background: linear-gradient(30deg, #f12711, #f5af19);
+  background: linear-gradient(30deg, #bf360c, #ff6f00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-danger {
   color: #ffffff !important;
-  background: linear-gradient(30deg, #dd2476, #ff512f);
+  background: linear-gradient(30deg, #b71c1c, #d50000);
 }
 
 .gradient-danger-text {
-  background: linear-gradient(30deg, #dd2476, #ff512f);
+  background: linear-gradient(30deg, #b71c1c, #d50000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

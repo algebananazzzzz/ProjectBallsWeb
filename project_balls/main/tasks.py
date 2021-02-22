@@ -45,6 +45,14 @@ def generate_dash_video(path):
 
     os.system(command)
 
+def auto_update_onsave(instance):
+    user = instance.User
+    board_tags = instance.primaryTags
+    all_tags = user.allTags
+    all_tags.extend(x for x in board_tags if x not in all_tags)
+    user.allTags = all_tags
+    user.save()
+
 def auto_delete_ondelete(instance):
     if instance.videoFile:
         if os.path.isfile(instance.videoFile.path):

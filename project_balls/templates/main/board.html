@@ -24,8 +24,8 @@
           <a target="_blank" href="{% url 'download_board' board.pk %}">
             <div class="card gradient-primary">
               <div class="card-content">
-                <h4>Localize</h4>
-                <h6>Download snippets</h6>
+                <h4>Download</h4>
+                <h6>Download all snippets</h6>
               </div>
 
             </div>
@@ -139,15 +139,15 @@
             <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
             <div class="row">
               <div class="col s12 no-padding">
-                <a class="btn-large waves-effect waves-green btn-flat green round-0" href="{% url 'snippet_video' board.pk snippet.pk %}" style="width:100%">View {{snippet.Name}}</a>
+                <a class="btn-large green waves-effect waves-green btn-flat round-0" href="{% url 'snippet_video' board.pk snippet.pk %}" style="width:100%">View {{snippet.Name}}</a>
               </div>
               <div class="col s4 m4 no-padding">
-                <a class="btn-large waves-effect waves-red btn-flat red lighten-3 round-0" href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
+                <a class="btn-large red waves-effect waves-red btn-flat lighten-3 round-0" href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
 
               </div>
 
               <div class="col s6 m8 no-padding">
-                <a class="btn-large waves-effect waves-purple btn-flat purple lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}"  style="width:100%">Download</a>
+                <a class="btn-large purple waves-effect waves-purple btn-flat lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}"  style="width:100%">Download</a>
               </div>
 
             </div>
