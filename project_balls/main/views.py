@@ -34,7 +34,7 @@ def download_query(request, query, boardPk=None):
 
     query = unquote(query).strip('][').split(', ')
     query = [ x.strip("'") for x in query ]
-    
+
     if boardPk:
         snippets = SnippetModel.objects.filter(Board=BoardModel.objects.get(pk=boardPk), Tags__contains=query)
     else:
@@ -44,7 +44,10 @@ def download_query(request, query, boardPk=None):
     for i in snippets:
         filenames.append(i.videoFile.path)
 
-    zip_subdir = str(query)
+    zip_subdir = ""
+    for i in query:
+        zip_subdir = zip_subdir + i + '_'
+
     zip_filename = "%s.zip" % zip_subdir
 
     # Open BytesIO to grab in-memory ZIP contents
