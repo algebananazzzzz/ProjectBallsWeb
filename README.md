@@ -9,24 +9,21 @@ After the software finished cutting the snippets in the backend, users can query
 
 Requisites:
 
-Docker installed in a Linux based machine
+Docker and docker-compose installed in a Linux based machine
 
 Set up:
 1. Git clone this repository
-2. Change directory into it, then create .env file
 ```
-cat > .env
-POSTGRES_DB=(your database name)
-POSTGRES_USER=(your user)
-POSTGRES_PASSWORD=(your password)
+git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
 ```
-3. Change exposed port (optional)
+
+2. Change exposed port (optional)
 ```
 nano docker-compose.yml
 ```
 Then change port number of 8000 to your custom port
 
-4. Run docker-compose commands
+3. Run docker-compose commands
 ```
 docker-compose build
 docker-compose up
