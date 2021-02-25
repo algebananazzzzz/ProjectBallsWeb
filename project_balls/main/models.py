@@ -84,7 +84,7 @@ class BoardModel(models.Model):
         duration = new_video.duration
 
         if duration < 1:
-            at_time = 0.5
+            at_time = duration / 2
         elif duration < 5:
             at_time = 2.5
         elif duration < 10:
