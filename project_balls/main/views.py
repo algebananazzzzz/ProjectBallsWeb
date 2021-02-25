@@ -31,21 +31,22 @@ def download(request, snippetPk):
 
 @login_required
 def download_query(request, query, boardPk=None):
-
-    query = unquote(query).strip('][').split(', ')
-    query = [ x.strip("'") for x in query ]
-
+    print(query)
+    query = unquote(query).split(',')
+    print(query)
     if boardPk:
         snippets = SnippetModel.objects.filter(Board=BoardModel.objects.get(pk=boardPk), Tags__contains=query)
     else:
         snippets = SnippetModel.objects.filter(Tags__contains=query)
     filenames = list()
-
+    print(snippets, query)
     for i in snippets:
         filenames.append(i.videoFile.path)
 
     zip_subdir = ""
+
     for i in query:
+        print(i)
         zip_subdir = zip_subdir + i + '_'
 
     zip_filename = "%s.zip" % zip_subdir
@@ -230,12 +231,21 @@ def board(request, boardPk):
     board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
 
     if request.method == "POST":
-        query = request.POST['query'].strip('][').split(', ')
+        print(request.POST['query'])
+        query = request.POST['query'].split(',')
         snippets = SnippetModel.objects.filter(
             Board=board, Tags__contains=query)
         messages.add_message(request, messages.SUCCESS,
                              'Query successful!! :)')
-        query_slug = quote(str(query))
+        print(query)
+        query_slug = str()
+        for i in query:
+            query_slug = query_slug + i + '%2C'
+        try:
+            query_slug = query_slug[:-3]
+        except:
+            pass
+
         return render(request=request, template_name="main/snippets.html", context={'boardPk': boardPk, 'snippets': snippets, 'query_slug': query_slug, 'boardPk': boardPk})
 
     return render(request=request, template_name="main/board.html", context={'board': board, 'snippets': board.snippets()})

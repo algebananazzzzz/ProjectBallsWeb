@@ -12,6 +12,8 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 def create_snippet(board, data):
     video_path = board.videoFile.path
     snippet_path = settings.MEDIA_ROOT + '/users/snippets/'
+    if not os.path.exists(snippet_path):
+        os.makedirs(snippet_path)
 
     tag_list = data['tags'].strip('][').split(',')
 
