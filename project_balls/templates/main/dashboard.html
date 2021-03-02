@@ -22,8 +22,8 @@
         <div class="col s6">
           <div class="card gradient-secondary">
             <div class="card-content">
-              <h4>Boards</h4>
-              <h6>You have {{board_count}} boards</h6>
+              <h4>Videos</h4>
+              <h6>You have {{board_count}} videos</h6>
             </div>
 
           </div>
@@ -81,8 +81,8 @@
 
 <div class="section-larger" id="home-content1">
   <div class="container-small">
-    <h1 class="gradient-primary-text">Boards</h1>
-    <h4>Each board denotes a video you wanna edit</h4>
+    <h1 class="gradient-primary-text">Videos</h1>
+    <h4>Each video denotes a video you wanna edit</h4>
     <div class="row">
       {% load thumbnail %}
       {% for board in board_list %}
@@ -105,7 +105,7 @@
         <a href="{% url 'board_config' %}">
           <div class="card-panel center padding-8 canvas-wrapper">
             <canvas class="canvas-basic" width="300" height="300"></canvas>
-            <h4 class="white-text">Add board
+            <h4 class="white-text">Add video
             </h4>
           </div>
         </a>

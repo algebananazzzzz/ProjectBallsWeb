@@ -43,6 +43,22 @@ function remove(element) {
   element.parentNode.remove()
 }
 
+function remove_time(element) {
+  var index = element.parentNode.parentNode.rowIndex
+  var start_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_start_time").value))
+  var end_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_end_time").value))
+  start_times = start_times.filter(function(item) {
+    return item !== start_times[start_times.length - index]
+  })
+  end_times = end_times.filter(function(item) {
+    return item !== end_times[end_times.length - index]
+  })
+  document.getElementById("hidden_end_time").value = encodeURIComponent(JSON.stringify(end_times))
+  document.getElementById("hidden_start_time").value = encodeURIComponent(JSON.stringify(start_times))
+
+  element.parentNode.parentNode.remove()
+}
+
 function validateForm(name, start_time, end_time) {
   if (name == "") {
     return true;
@@ -185,7 +201,7 @@ $('#video').keyup(function(event) {
       start_times.push(parseFloat(start_time))
       var end_time = player.currentTime().toFixed(2)
       end_times.push(parseFloat(end_time))
-      $("#table tbody").prepend("<tr><td>" + start_time + "</td><td>" + end_time + "</td></tr>");
+      $("#table tbody").prepend("<tr><td>" + start_time + "</td><td>" + end_time + '</td><td><i class="material-icons" onclick="remove_time(this)">remove</i></td></tr>');
 
       document.getElementById("hidden_end_time").value = encodeURIComponent(JSON.stringify(end_times))
       document.getElementById("hidden_start_time").value = encodeURIComponent(JSON.stringify(start_times))
