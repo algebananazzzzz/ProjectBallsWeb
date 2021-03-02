@@ -18,19 +18,19 @@
 
 <div class="section-larger fullscreen">
   <div class="container-small">
-    <h1 class="gradient-primary-text homepage-name">Snippets</h1>
-    <h4 class="center">All the snippets matching your query</h4>
-    <form method="post">
-    {% csrf_token %}
+    <h2 class="gradient-primary-text homepage-name">Snippets</h2>
+    <h5 class="center">All the snippets matching your query</h5>
+    {% if snippets.count != 0 %}
     {% if boardPk %}
     <a target="_blank" href="/download-query/{{query_slug}}/{{boardPk}}" class="btn gradient-success" style="width:100%">Download all snippets</a>
     {% else %}
     <a target="_blank" href="/download-query/{{query_slug}}" class="btn gradient-success" style="width:100%">Download all snippets</a>
     {% endif %}
+    {% endif %}
     <div class="row section">
 
       {% if snippets.count == 0%}
-      <h5 class="center">No snippets found :p</h5>
+      <h5 class="center">No snippets found :(</h5>
       {% else %}
       {% load thumbnail %}
       {% for snippet in snippets %}
