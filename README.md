@@ -34,4 +34,4 @@ Or:
 https://hub.docker.com/r/dzqx/projectballsweb
 ```
 
-You're ready to host/do whatever shit you want now
+You're ready to host the web application at port 8000 now
