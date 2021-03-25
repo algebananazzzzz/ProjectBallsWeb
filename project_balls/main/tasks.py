@@ -7,7 +7,7 @@ from django.core.files import File
 from video_encoding.backends import get_backend
 from .models import BoardModel, SnippetModel
 from moviepy.video.io.VideoFileClip import VideoFileClip
-
+import moviepy.video.fx.all as vfx
 
 def create_snippet(board, data):
     video_path = board.videoFile.path
@@ -23,13 +23,14 @@ def create_snippet(board, data):
 
     start_time = data['start_time'].strip('][').split(',')
     end_time = data['end_time'].strip('][').split(',')
+    speed = data['speed'].strip('][').split(',')
 
     for i in range(len(start_time)):
         new_snippet_path = snippet_path + uuid.uuid4().hex + '.mp4'
 
         with VideoFileClip(video_path) as video:
             new = video.subclip(
-                float(start_time[i]), float(end_time[i]))
+                float(start_time[i]), float(end_time[i])).fx(vfx.speedx, float(speed[i]))
             new.write_videofile(new_snippet_path, audio_codec='aac')
 
         with open(new_snippet_path, 'rb') as file_handler:

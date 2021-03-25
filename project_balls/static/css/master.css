@@ -16,6 +16,10 @@ html, body {
   padding: 8px !important
 }
 
+.padding-16 {
+  padding: 16px !important
+}
+
 .float-center {
   float: center !important
 }

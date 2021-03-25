@@ -323,15 +323,14 @@ def video(request, boardPk):
     board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
 
     if request.method == "POST":
+        print(unquote(unquote(request.POST['data'])))
 
         data = json.loads(unquote(unquote(request.POST['data'])))
+        print(unquote(request.POST['data']), data)
         for i in data:
             django_rq.enqueue(create_snippet, board, i)
-            messages.add_message(request, messages.INFO,
-                                 "Creating snippet of " + i['name'])
 
-        messages.add_message(request, messages.WARNING,
-                             "Hmmmm, this may take a moment so don't freak out!! (Encoding ur snippets at the backend!!)")
+        messages.add_message(request, messages.SUCCESS, "Encoding ur snippets at the backend!!")
 
         return redirect('board', boardPk)
 

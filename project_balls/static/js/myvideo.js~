@@ -61,12 +61,12 @@ function remove_time(element) {
 
   document.getElementById("hidden_end_time").value = encodeURIComponent(JSON.stringify(end_times))
   document.getElementById("hidden_start_time").value = encodeURIComponent(JSON.stringify(start_times))
-  document.getElementById("hidden_speed").value = encodeURIComponent(JSON.stringify(speeds))
+  document.getElementById("hidden_speeds").value = encodeURIComponent(JSON.stringify(speeds))
 
   element.parentNode.parentNode.remove()
 }
 
-function validateForm(name, start_time, end_time, speed) {
+function validateForm(name, start_time, end_time) {
   if (name == "") {
     return true;
   }
@@ -74,9 +74,6 @@ function validateForm(name, start_time, end_time, speed) {
     return true;
   }
   if (end_time == "") {
-    return true;
-  }
-  if (speed == "") {
     return true;
   }
   return false
@@ -108,7 +105,7 @@ function comfirm_snippet(element) {
     "end_time": form_end_time,
     "speed": form_speed
   }
-  console.log(data)
+
   var hidden_input = document.getElementById("hidden_input")
 
 
@@ -210,13 +207,11 @@ $('#video').keyup(function(event) {
       var start_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_start_time").value))
       var end_times = JSON.parse(decodeURIComponent(document.getElementById("hidden_end_time").value))
       var speeds = JSON.parse(decodeURIComponent(document.getElementById("hidden_speed").value))
-      var speed = parseFloat(document.getElementById("speed").value)
+      var speed = JSON.parse(decodeURIComponent(document.getElementById("speed").value))
 
       start_times.push(parseFloat(start_time))
       var end_time = player.currentTime().toFixed(2)
       end_times.push(parseFloat(end_time))
-      speeds.push(speed)
-
       $("#table tbody").prepend("<tr><td>" + start_time + "</td><td>" + end_time + "</td><td>" + speed + '</td><td><i class="material-icons" onclick="remove_time(this)">remove</i></td></tr>');
 
       document.getElementById("hidden_end_time").value = encodeURIComponent(JSON.stringify(end_times))
