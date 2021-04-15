@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'video_encoding',
     'django_rq',
-    'corsheaders'
+    'corsheaders',
 ]
 
 CACHES = {
@@ -169,3 +169,6 @@ LOGIN_URL = '/login'
 # Media url
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000 # 1 GB

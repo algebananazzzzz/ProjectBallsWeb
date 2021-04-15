@@ -41,7 +41,7 @@
 
     <div class="row">
       {% if context == 'Board' %}
-      <form method="post" enctype="multipart/form-data" onsubmit="load(this)">
+      <form method="post" id="form" enctype="multipart/form-data">
         {% csrf_token %}
 
         <h5 class="section">General</h5>

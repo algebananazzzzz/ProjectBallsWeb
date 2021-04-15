@@ -1,6 +1,6 @@
 const uploadForm = document.getElementById('form');
 var bar;
-var percentd;
+var percent;
 
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
 $(document).ready(function() {
@@ -27,10 +27,12 @@ $(document).ready(function() {
     </div>\
   </div>';
 
-    bar = document.getElementById('bar');
-    percentd = document.getElementById('progress');
+    bar = $('#bar');
+    percent = $('#percent');
 
+//    var data = $(this).serialize()
     var data = new FormData(this)
+    console.log(data)
     var action = $(this).attr('action')
     var type = $(this).attr('method')
 
@@ -40,17 +42,19 @@ $(document).ready(function() {
       enctype: 'multipart/form-data',
       data: data,
       beforeSend: function() {
+        console.log('before')
 
       },
       xhr: function() {
         const xhr = new window.XMLHttpRequest();
         xhr.upload.addEventListener('progress', e => {
+          // console.log(e)
           if (e.lengthComputable) {
-            var percent = e.loaded / e.total * 100
-            percent = percent.toFixed(1).toString() + '%'
-            bar.style.width = percent
-            console.log(percentd)
-            percentd.innerHTML = percent
+            const percent = e.loaded / e.total * 100
+            percent = percent.toFixed(1)) + '%'
+
+            bar.attr('width', percent)
+            console.log(percent)
           }
 
         })
@@ -60,7 +64,7 @@ $(document).ready(function() {
         console.log(error)
       },
       success: function() {
-        location.replace(document.referrer);
+        window.history.back();
       },
       cache: false,
       contentType: false,
@@ -90,7 +94,7 @@ $('.canvas-basic').each(function() {
         ],
         transitionSpeed: 5000
       }
-    }
+    }    
   });
 });
 

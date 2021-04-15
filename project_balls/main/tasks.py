@@ -19,7 +19,7 @@ def create_snippet(board, data):
 
     for i in tag_list:
         snippet_path += i
-        snippet_path += '-'
+        snippet_path += '_'
 
     start_time = data['start_time'].strip('][').split(',')
     end_time = data['end_time'].strip('][').split(',')

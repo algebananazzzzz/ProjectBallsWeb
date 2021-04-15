@@ -46,15 +46,14 @@
       <div class="row">
         <div class="col s12">
           Tags:
-          <div class="chip">
-            Offense
-          </div>
-          <div class="chip">
-            Defense
-          </div>
-          <div class="chip">
-            Side line play
-          </div>
+          {% if board.tag_autocomplete_data|length > 0 %}
+          {% for t in board.tag_autocomplete_data %}
+            <div class="chip">
+              {{t}}
+            </div>
+          {% endfor %}{% else %}
+            None
+          {% endif %}
         </div>
         <div class="col s12">
           <div class="card-panel center padding-8 gradient-primary">
