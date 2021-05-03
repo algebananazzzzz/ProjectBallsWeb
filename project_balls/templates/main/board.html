@@ -1,204 +1,278 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<nav id="topnav" class="topnav-fixed">
-  <canvas class="canvas-basic opacity-off"></canvas>
-  <div class="nav-wrapper" style="padding-left:15px">
-    <div class="center">
-      <a href="{% url 'dashboard' %}" class="breadcrumb">Dashboard</a>
-      <a class="breadcrumb">Video</a>
-    </div>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Projectballs</title>
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+  {% load static %}
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/tag-editor.css' %}" rel="stylesheet" />
+</head>
 
-  </div>
-</nav>
-
-
-<div class="bgimg">
-  <div class="row display-container container-small" style="padding-top:64px">
-    <div class="col s12 m6 white-text">
-      <h1>Actions</h1>
-
-
-      <div class="row">
-        <div class="col s6">
-          <a target="_blank" href="{% url 'download_board' board.pk %}">
-            <div class="card gradient-primary">
-              <div class="card-content">
-                <h4>Download</h4>
-                <h6>Download all snippets</h6>
-              </div>
-
-            </div>
-          </a>
-
+<body class="sb-nav-fixed">
+  <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="{% url 'dashboard' %}">Projectballs</a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+    <!-- Navbar Search-->
+    <form method="post" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+      {% csrf_token %}
+      <div class="input-group">
+        <input id="tag_search" placeholder="Search for tag..." aria-label="Search" aria-describedby="basic-addon2" />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
         </div>
-        <div class="col s6">
-          <a href="{% url 'generate_thumbnail' board.pk %}">
-            <div class="card gradient-secondary">
-              <div class="card-content">
-                <h4>Thumbnail</h4>
-                <h6>Generate thumbnail?</h6>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col s6">
-          <a href="{% url 'video' board.pk %}">
-            <div class="card gradient-tertiary">
-              <div class="card-content">
-                <h4>Cut video</h4>
-                <h6>Create snippets!!</h6>
-              </div>
-            </div>
-          </a>
-        </div>
-        <a href="{% url 'board_config' board.pk %}">
-
-          <div class="col s6">
-
-            <div class="card gradient-warning">
-              <div class="card-content">
-                <h4>Configure</h4>
-                <h6>Change tags?</h6>
-              </div>
-
-            </div>
-        </a>
-
+        <input type="hidden" name="query" id="queryTagsInput" value="">
       </div>
-    </div>
-  </div>
-  <div class="col s12 m6 white-text">
-    <h1 class="white-text right">Clips</h1>
-    <div class="row">
-      <div class="col s12">
-        Tags:
-        {% if board.primaryTags|length > 0 %}
-        {% for t in board.primaryTags %}
-        <div class="chip">
-          {{t}}
+    </form>
+    <!-- Navbar-->
+    <ul class="navbar-nav ml-auto ml-md-0">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="{% url 'configure' %}">Settings</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
         </div>
-        {% endfor %}{% else %}
-        None
-        {% endif %}
+      </li>
+    </ul>
 
-
-      </div>
-      <div class="col s12">
-        <div class="card-panel center padding-8 gradient-primary">
-          <form method="post">
-            {% csrf_token %}
-
-            <h4 class="white-text">New filter set:
-            </h4>
-            <h6>Returns snippets that matches query</h6>
-            <div id="query-chips" class="chips" style="white-text">
-            </div>
-            <input type="hidden" id="query" name="query" type="text">
-
-            <button type="submit" name="button" class="btn gradient-success" style="width:100%">Go!</button>
-          </form>
-
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-</div>
-
-
-<div class="section-larger" id="home-content1">
-  <div class="container-small">
-    <h1 class="gradient-primary-text homepage-name">Snippets</h1>
-    <h4 class="center">Your snippets saved for this video</h4>
-    <div class="row">
-      {% load thumbnail %}
-      {% for snippet in snippets %}
-      <div class="col s12 m6 l4">
-        <div class="card">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator bgimg" src="{% thumbnail snippet.thumbnail '1600x900' crop='center' as im %}{{ im.url }}{% endthumbnail %}">
-            <span class=" card-title activator white-text">
-              {{snippet.Name}}
-              <br>
-              {% if snippet.not_tag_blank %}
-              {% for i in snippet.Tags %}
-              <div class="chip">
-                {{i}}
-              </div>
-              {% endfor %}
-
-            {% endif %}
-          </span>
-          </div>
-
-          <div class="card-reveal">
-            <span class="card-title grey-text text-darken-4">{{snippet.Name}}<i class="material-icons right">close</i></span>
-            <div class="row">
-              <div class="col s12 no-padding">
-                <a class="btn-large green waves-effect waves-green btn-flat round-0" href="{% url 'snippet_video' board.pk snippet.pk %}" style="width:100%">View {{snippet.Name}}</a>
-              </div>
-              <div class="col s4 m4 no-padding">
-                <a class="btn-large red waves-effect waves-red btn-flat lighten-3 round-0" href="{% url 'delete_snippet' board.pk snippet.pk %}" style="width:100%">Delete</a>
-
-              </div>
-
-              <div class="col s6 m8 no-padding">
-                <a class="btn-large purple waves-effect waves-purple btn-flat lighten-2 round-0" target="_blank" href="{% url 'download' snippet.pk %}"  style="width:100%">Download</a>
-              </div>
-
-            </div>
-
+  </nav>
+  <div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+      <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+          <div class="nav">
+            <div class="sb-sidenav-menu-heading">Core</div>
+            <a class="nav-link" href="{% url 'dashboard' %}">
+              <div class="sb-nav-link-icon "><i class="fas fa-tachometer-alt"></i></div>
+              Dashboard
+            </a>
+            <div class="sb-sidenav-menu-heading">Video</div>
+            <a class="nav-link active" href="#">
+              <div class="sb-nav-link-icon "><i class="fas fa-play"></i></div>
+              Video
+            </a>
+            <a class="nav-link " href="{% url 'board_snippet_view' board.pk %}">
+              <div class="sb-nav-link-icon "><i class="fas fa-eye"></i></div>
+              Toggle view
+            </a>
+            <a class="nav-link " href="{% url 'video' board.pk %}">
+              <div class="sb-nav-link-icon "><i class="fas fa-cut"></i></div>
+              Cut video
+            </a>
+            <a class="nav-link " href="{% url 'board_config' board.pk %}">
+              <div class="sb-nav-link-icon "><i class="fas fa-question"></i></div>
+              Configure
+            </a>
+            <div class="sb-sidenav-menu-heading">Settings</div>
+            <a class="nav-link" href="{% url 'configure' %}">
+              <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+              Settings
+            </a>
           </div>
         </div>
-      </div>
-      {% endfor %}
+        <div class="sb-sidenav-footer">
+          <div class="small">Logged in as:</div>
+          {{username}}
+        </div>
+      </nav>
+    </div>
+    <div id="layoutSidenav_content">
+      <main>
+        <div class="container-fluid">
+          <h1 class="mt-4">Video</h1>
+          <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Video</li>
+          </ol>
+          <div class="row">
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-primary text-white mb-4">
+                <div class="card-body">Download</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                  <a class="small text-white stretched-link" href="{% url 'download_board' board.pk %}">Download all snippets for this video</a>
+                  <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-warning text-white mb-4">
+                <div class="card-body">View snippets</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                  <a class="small text-white stretched-link" href="{% url 'board_snippet_view' board.pk%}">Toggle view to view all snippets</a>
+                  <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-success text-white mb-4">
+                <div class="card-body">Cut video</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                  <a class="small text-white stretched-link" href="{% url 'video' board.pk %}">Cut snippets for this video</a>
+                  <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="card bg-danger text-white mb-4">
+                <div class="card-body">Configure</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                  <a class="small text-white stretched-link" href="{% url 'board_config' board.pk %}">Configure video file/tags</a>
+                  <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <div class="card-header">
+              <i class="fas fa-chart-area mr-1"></i>
+              Tag distribution
+            </div>
+            <div class="card-body"><canvas id="myBarChart" width="100%" height="30"></canvas></div>
+          </div> 
+            <div class="card mb-4">
+              <div class="card-header">
+                <i class="fas fa-table mr-1"></i>
+                Snippets
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Duration</th>
+                        <th>Tags</th>
+                        <th>Speed</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
 
+                    <tbody>
+                      {% for snippet in snippets %}
+                      <tr>
+                        <td><a href="{% url 'snippet_video' board.pk snippet.pk %}" style="color:inherit"> {{snippet.Name}} </a></td>
+                        <td><a href="{% url 'snippet_video' board.pk snippet.pk %}" style="color:inherit"> {{snippet.videoFile.duration}}</a></td>
+                        <td>
+                          {% if snippet.not_tag_blank %}
+                          {% for i in snippet.Tags %}
+                          <span class="badge bg-primary text-white">{{i}}</span>
+                          {% endfor %}
+                          {% else %}
+                          None
+                          {% endif %}
+                        </td>
+                        <td><a href="{% url 'snippet_video' board.pk snippet.pk %}" style="color:inherit">{{snippet.Speed}}</a></td>
+                        <td><a href="{% url 'download' snippet.pk %}" style="color:inherit"><i class="fas fa-download mr-3"></i></a><a href="{% url 'delete_snippet' board.pk snippet.pk %}" style="color:inherit"><i class="fas fa-trash"></i></a></td>
+                      </tr>
+                      {% endfor%}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+      </main>
+<!--
+
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+          <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; Your Website 2020</div>
+            <div>
+              <a href="#">Privacy Policy</a>
+              &middot;
+              <a href="#">Terms &amp; Conditions</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+-->
     </div>
   </div>
-</div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/caret/1.3.4/jquery.caret.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tag-editor/1.0.20/jquery.tag-editor.js"></script>
+  {% load static %}
+  <script src="{% static 'js/scripts.js' %}"></script>
+  <script type="text/javascript">
+  $('#dataTable').DataTable();
 
+$("#tag_search").on("keydown", function(e) {
+  e.preventDefault();
+});
+var tag_autocomplete_data = {{ board.primaryTags | safe }}
 
-<footer class="page-footer canvas-wrapper">
-  <canvas class="canvas-basic"></canvas>
-  <div class="cta-wrapper">
-    <div class="container">
-      <div class="row">
-        <div class="col l8 s12">
-          <h5 class="white-text">Ariesse</h5>
-          <h6>Simplicity, clarity, versatility</h6>
-        </div>
-
-        <div class="col l4 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="https://github.com/algebananazzzzz" target="_blank">Github</a></li>
-            <li><a class="white-text" href="https://mail.google.com/mail/?view=cm&fs=1&to=danielp-devs@gmail.com" target="_blank">Email (No spams please)</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-        Made by <a class="white-text text-lighten-3" href="https://github.com/algebananazzzzz" target="_blank">algebananazzzzz</a>
-      </div>
-    </div>
-  </div>
-</footer>
-<style media="screen">
-  .bgimg {
-    background-image: url({{board.thumbnail.url|safe}})
+$('#tag_search').tagEditor({
+  placeholder: "Search for tag...",
+  autocomplete: {
+    delay: 0, // show suggestions immediately
+    position: {
+      collision: 'flip'
+    }, // automatic menu position up/down
+    source: tag_autocomplete_data
+  },
+  beforeTagSave: (field, editor, tags, tag, val) => {
+    if (!tag_autocomplete_data.includes(val)) {
+      return false
+    }
+  },
+  onChange: (field, editor, tags) => {
+    $('#queryTagsInput').val(tags.toString())
   }
-</style>
+});
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
 
-<script type="text/javascript">
-  var tag_autocomplete_data = {{ board.primaryTags | safe }}
-</script>
+// Bar Chart Example
+var ctx = document.getElementById("myBarChart");
+var myLineChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: {{ snippet_statistics.labels | safe }},
+    datasets: [{
+      label: "Number of snippets tagged by this tag",
+      backgroundColor: "rgba(2,117,216,1)",
+      borderColor: "rgba(2,117,216,1)",
+      data: {{ snippet_statistics.data | safe }},
+    }],
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false
+        },
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          stepSize: 1
+       },
+        gridLines: {
+          display: true
+        }
+      }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+  </script>
+</body>
 
-{% load static %}
-<script src="{% static 'js/dashboard.js' %}" charset="utf-8"></script>
+</html>
 
-{% endblock %}

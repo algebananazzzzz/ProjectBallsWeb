@@ -11,34 +11,46 @@ import moviepy.video.fx.all as vfx
 
 def create_snippet(board, data):
     video_path = board.videoFile.path
-    snippet_path = settings.MEDIA_ROOT + '/users/snippets/'
+    snippet_path = settings.MEDIA_ROOT + '/users/snippets/' + data['name']
+
     if not os.path.exists(snippet_path):
         os.makedirs(snippet_path)
 
-    tag_list = data['tags'].strip('][').split(',')
+    tag_list = data['tags']
 
     for i in tag_list:
         snippet_path += i
         snippet_path += '_'
 
-    start_time = data['start_time'].strip('][').split(',')
-    end_time = data['end_time'].strip('][').split(',')
-    speed = data['speed'].strip('][').split(',')
+    start_time = float(data['start_time'])
+    end_time = float(data['end_time'])
+    speed = float(data['speed'])
 
-    for i in range(len(start_time)):
-        new_snippet_path = snippet_path + uuid.uuid4().hex + '.mp4'
+    new_snippet_path = snippet_path + uuid.uuid4().hex + '.mp4'
 
-        with VideoFileClip(video_path) as video:
-            new = video.subclip(
-                float(start_time[i]), float(end_time[i])).fx(vfx.speedx, float(speed[i]))
-            new.write_videofile(new_snippet_path, audio_codec='aac')
+    with VideoFileClip(video_path) as video:
+        new = video.subclip(start_time, end_time).fx(vfx.speedx, speed)
+        new.write_videofile(new_snippet_path, audio_codec='aac')
 
         with open(new_snippet_path, 'rb') as file_handler:
-            snippet = SnippetModel.objects.create(Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list)
+            snippet = SnippetModel.objects.create(Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list, Speed=speed)
 
         os.remove(new_snippet_path)
 
         snippet.create_thumbnail()
+
+    board_tags = board.primaryTags
+    snippet_statistics = dict()
+
+    for x in board_tags:
+        snippet_count = SnippetModel.objects.filter(Board=board, Tags__contains=x.split()).count()
+        if x in snippet_statistics:
+            snippet_statistics[x] += snippet_count
+        else:
+            snippet_statistics[x] = snippet_count
+
+    board.snippetStatistics = snippet_statistics
+    board.save()
 
 def generate_dash_video(path):
 
@@ -54,9 +66,36 @@ def auto_update_onsave(instance):
     all_tags = user.allTags
     all_tags.extend(x for x in board_tags if x not in all_tags)
     user.allTags = all_tags
+
+    tag_statistics = dict()
+    snippet_statistics = dict()
+    boards = user.boards()
+
+    for b in boards:
+        board_tags = b.primaryTags
+        for x in board_tags:
+            if x in tag_statistics:
+                tag_statistics[x] += 1
+            else:
+                tag_statistics[x] = 1
+            snippet_count = SnippetModel.objects.filter(Board=b, Tags__contains=x.split()).count()
+            if x in snippet_statistics:
+                snippet_statistics[x] += snippet_count
+            else:
+                snippet_statistics[x] = snippet_count
+
+    user.tagStatistics = tag_statistics
+    user.snippetStatistics = snippet_statistics
     user.save()
 
 def auto_delete_ondelete(instance):
+    user = instance.User
+    all_tags = list()
+    for b in user.boards():
+        all_tags.extend(x for x in b.primaryTags if x not in all_tags)
+    user.allTags = all_tags
+    user.save()
+
     if instance.videoFile:
         if os.path.isfile(instance.videoFile.path):
             os.remove(instance.videoFile.path)
@@ -79,8 +118,29 @@ def auto_delete_ondelete(instance):
     except FileNotFoundError:
         pass
 
+    board_tags = instance.primaryTags
+    snippet_statistics = dict()
+
+    for x in board_tags:
+        snippet_count = SnippetModel.objects.filter(Board=instance, Tags__contains=x.split()).count()
+        if x in snippet_statistics:
+            snippet_statistics[x] += snippet_count
+        else:
+            snippet_statistics[x] = snippet_count
+
+    instance.snippetStatistics = snippet_statistics
+    instance.save()
+
+
 
 def auto_delete_onchange(instance):
+    user = instance.User 
+    all_tags = list()
+    for b in user.boards():
+        all_tags.extend(x for x in b.primaryTags if x not in all_tags)
+    user.allTags = all_tags
+    user.save()
+
     if not instance.pk:
         return
 
@@ -122,6 +182,21 @@ def auto_delete_snippet_ondelete(instance):
             os.unlink(old_path)
     except FileNotFoundError:
         pass
+    board = instance.Board
+    board_tags = board.primaryTags
+    snippet_tags = instance.Tags
+    snippet_statistics = dict()
+
+    for x in board_tags:
+        snippet_count = SnippetModel.objects.filter(Board=board, Tags__contains=x.split()).count()
+        if x in snippet_statistics:
+            snippet_statistics[x] += snippet_count
+        else:
+            snippet_statistics[x] = snippet_count
+        if x in snippet_tags:
+            snippet_statistics[x] -= 1
+    board.snippetStatistics = snippet_statistics
+    board.save()
 
 
 def auto_delete_snippet_onchange(instance):

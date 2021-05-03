@@ -24,4 +24,5 @@ urlpatterns = [
          views.download_board, name='download_board'),
     path('download-query/<str:query>/<int:boardPk>', views.download_query, name='download_query'),
     path('download-query/<str:query>', views.download_query, name='download_query'),
+    path('board-snippetview/<int:boardPk>', views.board_snippet_view, name='board_snippet_view'),
 ]

@@ -15,6 +15,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 class User(AbstractUser):
     allTags = ArrayField(models.CharField(max_length=30), default=list)
+    tagStatistics = models.JSONField(default=dict)
+    snippetStatistics = models.JSONField(default=dict)
     start_recording_key = models.IntegerField(default=83)
     end_recording_key = models.IntegerField(default=32)
     cancel_recording_key = models.IntegerField(default=67)
@@ -40,6 +42,10 @@ class BoardModel(models.Model):
                              on_delete=models.CASCADE)
 
     Name = models.CharField(max_length=50)
+
+    snippetStatistics = models.JSONField(default=dict)
+
+    UploadDate = models.DateField(auto_now_add=True)
 
     Description = models.CharField(max_length=500, null=True, blank=True)
 
@@ -125,6 +131,8 @@ class SnippetModel(models.Model):
     Name = models.CharField(max_length=50)
 
     Tags = ArrayField(models.CharField(max_length=30), default=list)
+
+    Speed = models.FloatField(default=1)
 
     videoFile = VideoField(upload_to='users/snippets', blank=True, null=True)
 

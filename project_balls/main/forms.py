@@ -21,10 +21,16 @@ class configureUserForm(forms.ModelForm):
 class BoardModelForm(forms.ModelForm):
 
     Name = forms.CharField(widget=forms.TextInput(
-        attrs={'class': 'validate require-count', 'data-length': 50}))
+        attrs={'class': 'form-control', 'data-length': 100}))
 
     Description = forms.CharField(required=False, widget=forms.Textarea(
-        attrs={'class': 'validate materialize-textarea require-count', 'data-length': 500}))
+        attrs={'class': 'form-control', 'data-length': 500}))
+
+    videoFile = forms.FileField(required=False, widget=forms.FileInput(
+        attrs={'class': 'form-control', 'accept': 'video/*'}))
+
+    thumbnail = forms.FileField(required=False, widget=forms.FileInput(
+        attrs={'class': 'form-control', 'accept': 'image/*'}))
 
     class Meta:
         model = BoardModel
