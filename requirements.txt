@@ -13,3 +13,4 @@ django_redis>=4.0
 rq==1.7.0
 sorl-thumbnail==12.7.0
 Pillow>=5.0,<6.0
+WhiteNoise==5.2.0
