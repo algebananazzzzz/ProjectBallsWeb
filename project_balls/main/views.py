@@ -299,7 +299,7 @@ def board_config(request, boardPk=None):
             form = BoardModelForm(initial={'thumbnail': 'default'})
             boardPk = False
 
-    return render(request=request, template_name="main/configure.html", context={'username': request.user.username, 'context': 'Board', 'boardPk': boardPk, 'form': form})
+    return render(request=request, template_name="main/configure.html", context={'username': request.user.username, 'context': 'Board', 'boardPk': boardPk, 'form': form, 'tag_autocomplete_data': request.user.allTags})
 
 
 @login_required

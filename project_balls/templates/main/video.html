@@ -13,6 +13,7 @@
   <link href="https://unpkg.com/@videojs/themes@1/dist/sea/index.css" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
   {% load static %}
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}" />
   <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
   <link href="{% static 'css/tag-editor.css' %}" rel=" stylesheet" />
 </head>
@@ -229,7 +230,9 @@
   var autocomplete_data = {{board.primaryTags|safe}}
   $('#tagInput').tagEditor({
     placeholder: "Add tags...",
+    forceLowercase: false,
     autocomplete: {
+      forceLowercase: false,
       delay: 0, // show suggestions immediately
       position: {
         collision: 'flip'
@@ -245,12 +248,8 @@
 
   });
 
-  $('#tag_search').tagEditor({
-    placeholder: "Search for tag..."
-  });
-
   function remove_row(element) {
-    element.parentNode.parentNode.remove()
+    myTable.row(element.parentNode.parentNode).remove().draw()
   }
 
 
@@ -295,9 +294,9 @@
       keynum = event.which;
     }
 
-    if (keynum == 83) {
+    if (keynum == {{start_recording_key}}) {
       $('#starttimeInput').val(time)
-    } else if (keynum == 32) {
+    } else if (keynum == {{end_recording_key}}) {
       start_time = $('#starttimeInput').val()
       if (start_time.length !== 0) {
         if (start_time < time) {

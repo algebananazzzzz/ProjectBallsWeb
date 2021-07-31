@@ -11,6 +11,7 @@
   <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
   {% load static %}
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.png' %}" />
   <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
   <link href="{% static 'css/tag-editor.css' %}" rel=" stylesheet" />
 </head>
@@ -105,7 +106,17 @@
                   <i class="fas fa-chart-area mr-1"></i>
                   Tag distribution
                 </div>
-                <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                <div class="card-body">
+                {% if snippet_statistics.data %}
+                <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                {% else %}
+                <a href="{% url 'board_config' %}">
+                  <div class="alert alert-warning" role="alert">
+                  No data available yet. This is either caused by all your videos not having tags, or that there are no videos. Click here to add a video.
+                  </div>
+                </a>
+                {% endif %}
+                </div>
               </div>
             </div>
             <div class="col-xl-6">
@@ -114,7 +125,17 @@
                   <i class="fas fa-chart-bar mr-1"></i>
                   Snippet distribution
                 </div>
-                <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                <div class="card-body">
+                {% if tag_statistics.data %}
+                <canvas id="myBarChart" width="100%" height="40"></canvas>
+                {% else %}
+                <a href="{% url 'board_config' %}">
+                  <div class="alert alert-warning" role="alert">
+                  No data available yet. This is either caused by all your snippets not having tags, or that there are no videos with tags. Click here to add a video.
+                  </div>
+                </a>
+                {% endif %}
+              </div>
               </div>
             </div>
           </div>
@@ -129,7 +150,7 @@
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Duration</th>
+                      <th>Duration (min)</th>
                       <th>Upload date</th>
                       <th>Number of snippets</th>
                     </tr>
@@ -139,7 +160,7 @@
                     {% for board in board_list %}
                     <tr>
                       <td><a href="{% url 'board' board.pk %}" style="color:inherit">{{board.Name}}</a></td>
-                      <td><a href="{% url 'board' board.pk %}" style="color:inherit">{{board.videoFile.duration}}</a></td>
+                      <td><a href="{% url 'board' board.pk %}" style="color:inherit">{{board.duration_in_min}}</a></td>
                       <td><a href="{% url 'board' board.pk %}" style="color:inherit">{{board.UploadDate}}</a></td>
                       <td><a href="{% url 'board' board.pk %}" style="color:inherit">{{board.snippets.count}}</a></td>
                     </tr>

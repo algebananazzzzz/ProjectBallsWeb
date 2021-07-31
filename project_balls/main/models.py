@@ -61,6 +61,11 @@ class BoardModel(models.Model):
     def __str__(self):
         return self.Name
 
+    def duration_in_min(self):
+        duration = self.videoFile.duration
+        duration = duration / 60
+        return round(duration, 2)
+
     def snippets(self):
         return SnippetModel.objects.filter(Board=self)
 
