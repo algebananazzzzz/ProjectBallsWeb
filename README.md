@@ -8,6 +8,7 @@ The user first creates an account, then upload a video they wanna edit. They the
 Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file. 
 
 "Quick start" Requisites and Set up:
+
 Python 3, Postgresql on port 5432, Redis on port 6379
 
 1. Git clone this repository
