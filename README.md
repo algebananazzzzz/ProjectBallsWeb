@@ -3,11 +3,31 @@ Writeup:
 
 ProjectBalls(web) is a web application software project created to address the user story of providing freely available and simplistic video editing softwares designed for coaches. The user action designed for is first uploading a video, then cutting the video into snippets, finally downloading the snippets. In essence, the project comprises of three main fuctions: edit video, query snippets matching descriptions and download snippets. 
 
-The user first creates an account and create videos that can denote a particular game, in which they can upload a video they wanna edit. The user can then proceed to cut the video in an interactive page, allowing the user to control specific keys (e.g. s for start, space for end) to indicate start and end times for multiple snippets matching a specific gameplay type (e.g. defense, sideline play) in a go, while being able to view the video and determine where to cut on the fly. 
+The user first creates an account, then upload a video they wanna edit. They then proceed to cut the video in an interactive page, using specific control keys (e.g. s for start, space for end) to indicate start and end times for multiple snippets matching a specific gameplay tag (e.g. defense, sideline play), while being able to view the video and determine where to cut on the fly. 
 
-After the software finished cutting the snippets in the backend, users can query snippets matching a specific description (e.g. defense, sideline play) across all boards (in dashboard page) or within a board, then download the snippet(s) one by one or all as a zip file. The user can customise the controls in the configuration page. 
+Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file. 
 
-Requisites:
+"Quick start" Requisites and Set up:
+Python 3, Postgresql on port 5432, Redis on port 6379
+
+1. Git clone this repository
+```
+git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
+```
+
+2. Within your preferred environment (venv), ensure all dependencies are downloaded
+```
+pip install -r requirements.txt
+```
+
+3. Deploy
+```
+python project_balls/manage.py makemigrations
+python project_balls/manage.py migrate
+python project_balls/manage.py runserver
+```
+
+Deployment Requisites:
 
 Docker and docker-compose installed in a Linux based machine
 
