@@ -21,7 +21,12 @@ git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
 pip install -r requirements.txt
 ```
 
-3. Deploy
+3. Create a database in postgresql, and edit the credentials into .env file
+```
+nano .env
+```
+
+4. Deploy
 ```
 python project_balls/manage.py makemigrations
 python project_balls/manage.py migrate
