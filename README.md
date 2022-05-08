@@ -18,6 +18,7 @@ git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
 
 2. Within your preferred environment (venv), ensure all dependencies are downloaded
 ```
+sudo apt install ffmpeg
 pip install -r requirements.txt
 ```
 
