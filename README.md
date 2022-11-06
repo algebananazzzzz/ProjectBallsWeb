@@ -8,7 +8,7 @@ The user first creates an account, then upload a video they wanna edit. They the
 Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file. 
 
 
-Deployment Requisites:
+# Deployment Requisites:
 
 Docker or docker-compose installed in a Linux based machine
 
@@ -25,14 +25,13 @@ nano docker-compose.yml
 Then change port number of 8000 to your preferred port in the web service. 
 
 3. Run docker commands
-```
 With docker-compose:
-
+```
 docker-compose build
 docker-compose up
-
+```
 Or with docker:
-
+```
 docker compose build
 docker compose up
 ```
