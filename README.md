@@ -25,6 +25,7 @@ nano docker-compose.yml
 Then change port number of 8000 to your preferred port in the web service. 
 
 3. Run docker commands
+
 With docker-compose:
 ```
 docker-compose build
@@ -35,6 +36,7 @@ Or with docker:
 docker compose build
 docker compose up
 ```
+
 
 
 "Quick start" Requisites and Set up:
