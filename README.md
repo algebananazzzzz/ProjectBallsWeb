@@ -7,6 +7,37 @@ The user first creates an account, then upload a video they wanna edit. They the
 
 Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file. 
 
+
+Deployment Requisites:
+
+Docker or docker-compose installed in a Linux based machine
+
+Set up:
+1. Git clone this repository
+```
+git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
+```
+
+2. Change exposed port (optional)
+```
+nano docker-compose.yml
+```
+Then change port number of 8000 to your preferred port in the web service. 
+
+3. Run docker commands
+```
+With docker-compose:
+
+docker-compose build
+docker-compose up
+
+Or with docker:
+
+docker compose build
+docker compose up
+```
+
+
 "Quick start" Requisites and Set up:
 
 Python 3, Postgresql on port 5432, Redis on port 6379
@@ -33,32 +64,3 @@ python project_balls/manage.py makemigrations
 python project_balls/manage.py migrate
 python project_balls/manage.py runserver
 ```
-
-Deployment Requisites:
-
-Docker and docker-compose installed in a Linux based machine
-
-Set up:
-1. Git clone this repository
-```
-git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
-```
-
-2. Change exposed port (optional)
-```
-nano docker-compose.yml
-```
-Then change port number of 8000 to your custom port in the web service. 
-
-3. Run docker-compose commands
-```
-docker-compose build
-docker-compose up
-```
-Or:
-1. If you're familiar with docker, just pull the latest docker image from dockerhub and build it
-```
-https://hub.docker.com/r/dzqx/projectballsweb
-```
-
-You're ready to host the web application at port 8000 now
