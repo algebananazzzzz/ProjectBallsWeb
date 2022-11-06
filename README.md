@@ -37,9 +37,7 @@ docker compose build
 docker compose up
 ```
 
-
-
-"Quick start" Requisites and Set up:
+# "Quick start" Requisites and Set up:
 
 Python 3, Postgresql on port 5432, Redis on port 6379
 
