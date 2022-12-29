@@ -1,21 +1,19 @@
 import json
 import os
-from django.conf import settings
 import django_rq
 import zipfile
 import io
-from pathlib import Path
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import RequestContext
 from django.http import HttpResponse, Http404
 from django.contrib import auth
-from urllib.parse import quote, unquote
+from urllib.parse import unquote
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from .forms import MyUserCreationForm, BoardModelForm, configureUserForm
 from .models import User, BoardModel, SnippetModel
 from .tasks import create_snippet
 from django.contrib.auth.decorators import login_required
+
 
 @login_required
 def download(request, snippetPk):
@@ -29,11 +27,13 @@ def download(request, snippetPk):
 
     return response
 
+
 @login_required
 def download_query(request, query, boardPk=None):
     query = unquote(query).split(',')
     if boardPk:
-        snippets = SnippetModel.objects.filter(Board=BoardModel.objects.get(pk=boardPk), Tags__contains=query)
+        snippets = SnippetModel.objects.filter(
+            Board=BoardModel.objects.get(pk=boardPk), Tags__contains=query)
     else:
         snippets = SnippetModel.objects.filter(Tags__contains=query)
     filenames = list()
@@ -72,6 +72,7 @@ def download_query(request, query, boardPk=None):
     resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
 
     return resp
+
 
 @login_required
 def download_board(request, boardPk):
@@ -227,8 +228,10 @@ def dashboard(request):
 
     board_list = request.user.boards()
     tag_autocomplete_data = request.user.allTags
-    snippet_statistics = {'labels': list(request.user.snippetStatistics.keys()), 'data': list(request.user.snippetStatistics.values())}
-    tag_statistics = {'labels': list(request.user.tagStatistics.keys()), 'data': list(request.user.tagStatistics.values())}
+    snippet_statistics = {'labels': list(request.user.snippetStatistics.keys(
+    )), 'data': list(request.user.snippetStatistics.values())}
+    tag_statistics = {'labels': list(request.user.tagStatistics.keys(
+    )), 'data': list(request.user.tagStatistics.values())}
 
     return render(request=request, template_name="main/dashboard.html", context={'username': request.user.username, 'board_list': board_list, 'tag_autocomplete_data': tag_autocomplete_data, 'board_count': board_list.count(), 'snippet_statistics': snippet_statistics, 'tag_statistics': tag_statistics})
 
@@ -252,14 +255,17 @@ def board(request, boardPk):
             pass
 
         return render(request=request, template_name="main/snippets.html", context={'username': request.user.username, 'boardPk': boardPk, 'snippets': snippets, 'query_slug': query_slug})
-    snippet_statistics = {'labels': list(board.snippetStatistics.keys()), 'data': list(board.snippetStatistics.values())}
+    snippet_statistics = {'labels': list(
+        board.snippetStatistics.keys()), 'data': list(board.snippetStatistics.values())}
     return render(request=request, template_name="main/board.html", context={'board': board, 'snippets': board.snippets(), 'username': request.user.username, 'snippet_statistics': snippet_statistics})
+
 
 @login_required
 def board_snippet_view(request, boardPk):
     board = get_object_or_404(BoardModel, User=request.user, pk=boardPk)
     snippets = board.snippets()
     return render(request=request, template_name="main/snippets.html", context={'username': request.user.username, 'boardPk': boardPk, 'snippets': snippets, 'from_board': True})
+
 
 @login_required
 def board_config(request, boardPk=None):
@@ -336,27 +342,14 @@ def video(request, boardPk):
         for i in data:
             django_rq.enqueue(create_snippet, board, i)
 
-        messages.add_message(request, messages.SUCCESS, "Encoding ur snippets at the backend!!")
+        messages.add_message(request, messages.SUCCESS,
+                             "Encoding ur snippets at the backend!!")
 
         return redirect('board', boardPk)
 
     video_path = board.get_mpd_videofile_url()
 
     return render(request=request, template_name="main/video.html", context={'username': request.user.username, 'board': board, 'video_path': video_path, 'start_recording_key': user.start_recording_key, 'end_recording_key': user.end_recording_key, 'cancel_recording_key': user.cancel_recording_key})
-
-
-@login_required
-def snippet_video(request, boardPk, snippetPk):
-    snippet = get_object_or_404(SnippetModel, pk=snippetPk)
-    if snippet.Board.User != request.user:
-        return Http404
-
-    video_path = '/media/users/snippets/' + \
-        Path(snippet.videoFile.name).stem + '.mp4'
-
-    thumbnail_url = snippet.get_thumbnail_url()
-
-    return render(request=request, template_name="main/snippet-video.html", context={'username': request.user.username, 'snippetPk':snippet.pk, 'boardPk': boardPk, 'thumbnail_url': thumbnail_url, 'video_path': video_path})
 
 
 @login_required

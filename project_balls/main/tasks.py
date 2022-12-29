@@ -2,12 +2,11 @@ import os
 import glob
 import uuid
 from django.conf import settings
-from pathlib import Path
 from django.core.files import File
-from video_encoding.backends import get_backend
 from .models import BoardModel, SnippetModel
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import moviepy.video.fx.all as vfx
+
 
 def create_snippet(board, data):
     video_path = board.videoFile.path
@@ -33,7 +32,8 @@ def create_snippet(board, data):
         new.write_videofile(new_snippet_path, audio_codec='aac')
 
         with open(new_snippet_path, 'rb') as file_handler:
-            snippet = SnippetModel.objects.create(Board=board, videoFile=File(file_handler), Name=data['name'], Tags=tag_list, Speed=speed)
+            snippet = SnippetModel.objects.create(Board=board, videoFile=File(
+                file_handler), Name=data['name'], Tags=tag_list, Speed=speed)
 
         os.remove(new_snippet_path)
 
@@ -43,7 +43,8 @@ def create_snippet(board, data):
     snippet_statistics = dict()
 
     for x in board_tags:
-        snippet_count = SnippetModel.objects.filter(Board=board, Tags__contains=x.split()).count()
+        snippet_count = SnippetModel.objects.filter(
+            Board=board, Tags__contains=x.split()).count()
         if x in snippet_statistics:
             snippet_statistics[x] += snippet_count
         else:
@@ -52,13 +53,16 @@ def create_snippet(board, data):
     board.snippetStatistics = snippet_statistics
     board.save()
 
+
 def generate_dash_video(path):
 
-    command = 'MP4Box -dash 4000 -frag 4000 -rap -bs-switching no -profile live ' + path +'#video ' + path +  '#audio'
+    command = 'MP4Box -dash 4000 -frag 4000 -rap -bs-switching no -profile live ' + \
+        path + '#video ' + path + '#audio'
 
     os.chdir(settings.MEDIA_ROOT + '/users/videos')
 
     os.system(command)
+
 
 def auto_update_onsave(instance):
     user = instance.User
@@ -78,7 +82,8 @@ def auto_update_onsave(instance):
                 tag_statistics[x] += 1
             else:
                 tag_statistics[x] = 1
-            snippet_count = SnippetModel.objects.filter(Board=b, Tags__contains=x.split()).count()
+            snippet_count = SnippetModel.objects.filter(
+                Board=b, Tags__contains=x.split()).count()
             if x in snippet_statistics:
                 snippet_statistics[x] += snippet_count
             else:
@@ -87,6 +92,7 @@ def auto_update_onsave(instance):
     user.tagStatistics = tag_statistics
     user.snippetStatistics = snippet_statistics
     user.save()
+
 
 def auto_delete_ondelete(instance):
     user = instance.User
@@ -122,7 +128,8 @@ def auto_delete_ondelete(instance):
     snippet_statistics = dict()
 
     for x in board_tags:
-        snippet_count = SnippetModel.objects.filter(Board=instance, Tags__contains=x.split()).count()
+        snippet_count = SnippetModel.objects.filter(
+            Board=instance, Tags__contains=x.split()).count()
         if x in snippet_statistics:
             snippet_statistics[x] += snippet_count
         else:
@@ -132,9 +139,8 @@ def auto_delete_ondelete(instance):
     instance.save()
 
 
-
 def auto_delete_onchange(instance):
-    user = instance.User 
+    user = instance.User
     all_tags = list()
     for b in user.boards():
         all_tags.extend(x for x in b.primaryTags if x not in all_tags)
@@ -188,7 +194,8 @@ def auto_delete_snippet_ondelete(instance):
     snippet_statistics = dict()
 
     for x in board_tags:
-        snippet_count = SnippetModel.objects.filter(Board=board, Tags__contains=x.split()).count()
+        snippet_count = SnippetModel.objects.filter(
+            Board=board, Tags__contains=x.split()).count()
         if x in snippet_statistics:
             snippet_statistics[x] += snippet_count
         else:

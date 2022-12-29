@@ -1,6 +1,5 @@
 import os
 import django_rq
-from functools import wraps
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 from .models import BoardModel, SnippetModel
@@ -14,6 +13,7 @@ def convert_video(sender, instance, **kwargs):
     queue.enqueue(generate_dash_video,
                   os.path.basename(instance.videoFile.name))
     queue.enqueue(auto_update_onsave, instance)
+
 
 @receiver(pre_delete, sender=BoardModel)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

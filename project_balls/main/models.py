@@ -2,9 +2,8 @@ import os
 from django.db import models
 from django.core.files import File
 from pathlib import Path
-from django.core.files.storage import default_storage
 from django.conf import settings
-from django.contrib.postgres.fields import ArrayField, JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.models import AbstractUser
 from video_encoding.fields import VideoField
 from video_encoding.backends import get_backend
