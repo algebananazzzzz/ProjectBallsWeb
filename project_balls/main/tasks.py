@@ -10,7 +10,8 @@ import moviepy.video.fx.all as vfx
 
 def create_snippet(board, data):
     video_path = board.videoFile.path
-    snippet_path = settings.MEDIA_ROOT + '/users/snippets/' + data['name']
+    snippet_path = settings.MEDIA_ROOT + \
+        '/users/snippets/' + data['name'] + '/'
 
     if not os.path.exists(snippet_path):
         os.makedirs(snippet_path)

@@ -4,8 +4,15 @@ services:
   db:
     restart: always
     image: postgres
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 2s
+      timeout: 5s
+      retries: 5
   redis:
     restart: always
     image: redis:latest
@@ -27,15 +34,13 @@ services:
       - .env
   web:
     build: .
-    command: bash -c "python project_balls/manage.py makemigrations && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python project_balls/manage.py makemigrations main && python project_balls/manage.py migrate && python project_balls/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
     depends_on:
-      - db
-      - redis
-      - rqworker
-      - rqworker_high
+      db:
+        condition: service_healthy
     env_file:
       - .env

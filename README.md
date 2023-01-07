@@ -1,11 +1,11 @@
 # ProjectBallsWeb
 Writeup:
 
-ProjectBalls(web) is a web application software project created to address the user story of providing freely available and simplistic video editing softwares designed for coaches. The user action designed for is first uploading a video, then cutting the video into snippets, finally downloading the snippets. In essence, the project comprises of three main fuctions: edit video, query snippets matching descriptions and download snippets. 
+ProjectBalls(web) is a web application software project created to address the user story of providing freely available and on-the-go video editing softwares designed for coaches. The user action designed for is first uploading a video, then cutting the video into snippets, finally downloading the snippets. In essence, the project comprises of three main fuctions: cutting snippets from video, query snippets matching descriptions and download snippets.
 
-The user first creates an account, then upload a video they wanna edit. They then proceed to cut the video in an interactive page, using specific control keys (e.g. s for start, space for end) to indicate start and end times for multiple snippets matching a specific gameplay tag (e.g. defense, sideline play), while being able to view the video and determine where to cut on the fly. 
+The user first creates an account, then upload a video they wanna edit. They then proceed to cut the video in an interactive page, using specific control keys (e.g. s for start, space for end) to indicate start and end times for multiple snippets matching a specific gameplay tag (e.g. defense, sideline play), while being able to view the video and determine where to cut on the fly.
 
-Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file. 
+Afterwhich, users can query snippets matching a specific description (e.g. defense, sideline play) in the dashboard page, then download the snippet(s) one by one or all as a zip file.
 
 
 # Deployment Requisites:
@@ -22,7 +22,7 @@ git clone https://github.com/algebananazzzzz/ProjectBallsWeb.git
 ```
 nano docker-compose.yml
 ```
-Then change port number of 8000 to your preferred port in the web service. 
+Then change exposed port number of 8000 to your preferred port in the web service in the field ports. By default, application is exposed to port 8000 of localhost.
 
 3. Run docker commands
 
