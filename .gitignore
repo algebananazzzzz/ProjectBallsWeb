@@ -1,0 +1,9 @@
+# ignore all media
+media/cache
+media/images
+media/users/snippets
+media/users/thumbnails
+media/users/videos
+
+# ignore postgres backup
+/postgres-data
